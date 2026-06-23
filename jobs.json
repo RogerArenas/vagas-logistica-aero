@@ -1,0 +1,72 @@
+{
+  "updated_at": "2026-06-22T08:00:00Z",
+  "total": 5,
+  "new_count": 5,
+  "jobs": [
+    {
+      "id": "sample_001",
+      "title": "Analista de Logística Aeroportuária",
+      "company": "LATAM Airlines",
+      "emoji": "🔵",
+      "location": "Guarulhos, SP",
+      "type": "CLT",
+      "area": "Logística",
+      "date_posted": "2026-06-22",
+      "url": "https://latam.gupy.io/",
+      "source": "Gupy",
+      "is_new": true
+    },
+    {
+      "id": "sample_002",
+      "title": "Coordenador de Carga Aérea",
+      "company": "Azul Linhas Aéreas",
+      "emoji": "🔷",
+      "location": "Campinas, SP",
+      "type": "CLT",
+      "area": "Carga",
+      "date_posted": "2026-06-21",
+      "url": "https://azul.gupy.io/",
+      "source": "Gupy",
+      "is_new": true
+    },
+    {
+      "id": "sample_003",
+      "title": "Supervisor de Operações em Solo (Ground Handling)",
+      "company": "Swissport Brasil",
+      "emoji": "⚪",
+      "location": "Guarulhos, SP",
+      "type": "CLT",
+      "area": "Operações",
+      "date_posted": "2026-06-20",
+      "url": "https://swissport-brasil.gupy.io/",
+      "source": "Gupy",
+      "is_new": false
+    },
+    {
+      "id": "sample_004",
+      "title": "Operador de Logística — Turno",
+      "company": "GOL Linhas Aéreas",
+      "emoji": "🟠",
+      "location": "Guarulhos, SP",
+      "type": "CLT",
+      "area": "Logística",
+      "date_posted": "2026-06-19",
+      "url": "https://gol.gupy.io/",
+      "source": "Gupy",
+      "is_new": false
+    },
+    {
+      "id": "sample_005",
+      "title": "Estágio em Supply Chain",
+      "company": "DHL Express Brasil",
+      "emoji": "🟡",
+      "location": "São Paulo, SP",
+      "type": "Estágio",
+      "area": "Logística",
+      "date_posted": "2026-06-18",
+      "url": "https://dhl.gupy.io/",
+      "source": "Gupy",
+      "is_new": false
+    }
+  ]
+}

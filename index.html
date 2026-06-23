@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Radar de Vagas ✈️ Logística Aérea · SP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Design tokens ── */
+    :root {
+      --navy:    #07111F;
+      --panel:   #0D1E33;
+      --card:    #112240;
+      --border:  #1E3A5A;
+      --amber:   #F5A623;
+      --amber-d: #C4851A;
+      --sky:     #4EAFFF;
+      --text:    #CDD8E8;
+      --muted:   #627A97;
+      --green:   #22C55E;
+      --red:     #EF4444;
+      --white:   #EEF4FB;
+      --font-mono: 'IBM Plex Mono', monospace;
+      --font-sans: 'Inter', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--navy);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Runway line (top signature element) ── */
+    .runway-bar {
+      height: 4px;
+      background: repeating-linear-gradient(90deg, var(--amber) 0 40px, transparent 40px 60px);
+      animation: runway-scroll 3s linear infinite;
+    }
+    @keyframes runway-scroll {
+      from { background-position: 0 0; }
+      to   { background-position: 60px 0; }
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 1.25rem 1.25rem;
+    }
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .logo-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--amber);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+    .logo-text h1 {
+      font-family: var(--font-mono);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .logo-text span {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      letter-spacing: 0.06em;
+    }
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .pill {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 0.3rem 0.65rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+    .pill-green {
+      border-color: var(--green);
+      color: var(--green);
+      background: rgba(34,197,94,0.08);
+    }
+    #last-updated {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    /* ── Controls ── */
+    .controls {
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 1.25rem;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .controls-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .search-wrap {
+      position: relative;
+      flex: 1 1 220px;
+    }
+    .search-icon {
+      position: absolute;
+      left: 0.85rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 0.95rem;
+      pointer-events: none;
+    }
+    input[type="text"], select {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--white);
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      padding: 0.6rem 0.85rem;
+      outline: none;
+      width: 100%;
+      transition: border-color 0.2s;
+    }
+    input[type="text"] { padding-left: 2.2rem; }
+    input[type="text"]:focus, select:focus { border-color: var(--sky); }
+    select { flex: 0 1 auto; cursor: pointer; }
+    select option { background: var(--card); }
+
+    .btn {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      padding: 0.6rem 1.1rem;
+      letter-spacing: 0.04em;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .btn-amber { background: var(--amber); color: #07111F; }
+    .btn-amber:hover { background: var(--amber-d); }
+    .btn-ghost {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { border-color: var(--sky); color: var(--sky); }
+    .btn-wpp {
+      background: #25D366;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .btn-wpp:hover { background: #1da851; }
+
+    /* ── Stats bar ── */
+    .stats-bar {
+      max-width: 1100px;
+      margin: 1.25rem auto 0;
+      padding: 0 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .stats-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .count-label {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .count-num {
+      font-family: var(--font-mono);
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--amber);
+      line-height: 1;
+    }
+
+    /* ── Board header (departure-board style) ── */
+    .board-header {
+      max-width: 1100px;
+      margin: 1rem auto 0;
+      padding: 0 1.25rem;
+    }
+    .board-cols {
+      display: grid;
+      grid-template-columns: 2fr 3fr 1.5fr 1fr auto;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--border);
+      border-radius: 6px 6px 0 0;
+    }
+    .col-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--amber);
+    }
+
+    /* ── Jobs grid ── */
+    .jobs-container {
+      max-width: 1100px;
+      margin: 0 auto 2rem;
+      padding: 0 1.25rem;
+    }
+
+    .job-card {
+      display: grid;
+      grid-template-columns: 2fr 3fr 1.5fr 1fr auto;
+      gap: 0.5rem;
+      align-items: center;
+      padding: 0.85rem 1rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-top: none;
+      transition: background 0.15s, border-color 0.15s;
+      cursor: default;
+    }
+    .job-card:hover { background: #162d4a; border-color: var(--sky); }
+    .job-card:last-child { border-radius: 0 0 6px 6px; }
+
+    .job-card.is-new { border-left: 3px solid var(--green); }
+
+    .job-company {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .company-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      background: var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .company-name {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: 0.04em;
+    }
+    .company-src {
+      font-size: 0.65rem;
+      color: var(--muted);
+    }
+
+    .job-title {
+      font-size: 0.875rem;
+      color: var(--white);
+      font-weight: 500;
+    }
+    .job-location {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 0.2rem;
+    }
+
+    .badge {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .badge-clt  { background: rgba(78,175,255,0.15); color: var(--sky); }
+    .badge-pj   { background: rgba(245,166,35,0.15); color: var(--amber); }
+    .badge-est  { background: rgba(34,197,94,0.15);  color: var(--green); }
+    .badge-tmp  { background: rgba(156,163,175,0.15); color: #9CA3AF; }
+    .badge-new  { background: rgba(34,197,94,0.2); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
+
+    .job-date {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--muted);
+    }
+
+    .job-actions {
+      display: flex;
+      gap: 0.4rem;
+    }
+    .action-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+      text-decoration: none;
+    }
+    .action-btn:hover { border-color: var(--amber); color: var(--amber); background: rgba(245,166,35,0.08); }
+    .action-btn.wpp:hover { border-color: #25D366; color: #25D366; background: rgba(37,211,102,0.08); }
+
+    /* ── Empty / loading ── */
+    .board-message {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 6px 6px;
+      padding: 3rem 1rem;
+      text-align: center;
+    }
+    .board-message .icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+    .board-message p { font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted); letter-spacing: 0.04em; }
+    .spinner {
+      width: 32px; height: 32px;
+      border: 3px solid var(--border);
+      border-top-color: var(--amber);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 1rem;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Alert modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(7,17,31,0.85);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      max-width: 460px;
+      width: 100%;
+      padding: 1.75rem;
+    }
+    .modal h2 {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 0.4rem;
+    }
+    .modal p { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.25rem; line-height: 1.6; }
+    .modal label { font-size: 0.8rem; color: var(--text); display: block; margin-bottom: 0.4rem; }
+    .modal input {
+      margin-bottom: 1rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--white);
+      font-size: 0.875rem;
+      padding: 0.6rem 0.85rem;
+      outline: none;
+      width: 100%;
+    }
+    .modal input:focus { border-color: var(--sky); }
+    .modal-actions { display: flex; gap: 0.75rem; }
+    .modal-note {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 1rem;
+      line-height: 1.5;
+      font-family: var(--font-mono);
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.25rem;
+      text-align: center;
+    }
+    footer p {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+    footer p span { color: var(--amber); }
+
+    /* ── Mobile ── */
+    @media (max-width: 700px) {
+      .board-cols { display: none; }
+      .job-card {
+        grid-template-columns: 1fr;
+        gap: 0.4rem;
+        padding: 1rem;
+      }
+      .job-actions { margin-top: 0.25rem; }
+      .stats-bar { flex-direction: column; align-items: flex-start; }
+      header { padding: 1rem; }
+    }
+
+    /* ── Flip-in animation ── */
+    @keyframes flip-in {
+      from { opacity: 0; transform: translateY(-8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .job-card { animation: flip-in 0.25s ease both; }
+  </style>
+</head>
+<body>
+
+<div class="runway-bar"></div>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-icon">✈️</div>
+      <div class="logo-text">
+        <h1>Radar de Vagas</h1>
+        <span>Logística · Companhias Aéreas · São Paulo</span>
+      </div>
+    </div>
+    <div class="header-meta">
+      <span class="pill pill-green" id="status-pill">● AO VIVO</span>
+      <span id="last-updated">Carregando…</span>
+      <button class="btn btn-amber" onclick="openAlertModal()">🔔 Ativar alerta</button>
+    </div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="controls-inner">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="search" placeholder="Buscar cargo, empresa…" oninput="applyFilters()" />
+    </div>
+    <select id="filter-company" onchange="applyFilters()">
+      <option value="">Todas as empresas</option>
+    </select>
+    <select id="filter-type" onchange="applyFilters()">
+      <option value="">Todos os contratos</option>
+      <option value="CLT">CLT</option>
+      <option value="PJ">PJ</option>
+      <option value="Estágio">Estágio</option>
+      <option value="Temporário">Temporário</option>
+    </select>
+    <select id="filter-area" onchange="applyFilters()">
+      <option value="">Todas as áreas</option>
+      <option value="Logística">Logística</option>
+      <option value="Carga">Carga</option>
+      <option value="Operações">Operações</option>
+      <option value="Administração">Administração</option>
+      <option value="TI">TI</option>
+    </select>
+    <button class="btn btn-wpp" onclick="shareAll()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.997 2C6.476 2 2 6.477 2 12c0 1.99.577 3.847 1.572 5.412L2.046 22l4.695-1.507A9.946 9.946 0 0011.997 22c5.521 0 9.997-4.477 9.997-10S17.518 2 11.997 2z" fill-opacity=".2"/></svg>
+      Compartilhar
+    </button>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="stats-left">
+    <div>
+      <div class="count-label">Vagas encontradas</div>
+      <div class="count-num" id="job-count">—</div>
+    </div>
+    <div>
+      <div class="count-label">Novas hoje</div>
+      <div class="count-num" style="color:var(--green)" id="new-count">—</div>
+    </div>
+  </div>
+  <button class="btn btn-ghost" onclick="loadJobs(true)">↻ Atualizar</button>
+</div>
+
+<div class="board-header">
+  <div class="board-cols">
+    <span class="col-label">Empresa</span>
+    <span class="col-label">Cargo / Local</span>
+    <span class="col-label">Tipo</span>
+    <span class="col-label">Data</span>
+    <span class="col-label">Ações</span>
+  </div>
+</div>
+
+<div class="jobs-container" id="jobs-list"></div>
+
+<!-- Alert Modal -->
+<div class="modal-overlay" id="alert-modal">
+  <div class="modal">
+    <h2>🔔 Ativar alertas de novas vagas</h2>
+    <p>Você receberá um aviso por e-mail ou WhatsApp toda vez que uma vaga nova aparecer.</p>
+    <label for="alert-email">Seu e-mail</label>
+    <input type="text" id="alert-email" placeholder="voce@email.com" />
+    <label for="alert-wpp">Seu WhatsApp (com DDD)</label>
+    <input type="text" id="alert-wpp" placeholder="11 9 9999-9999" />
+    <div class="modal-actions">
+      <button class="btn btn-amber" onclick="saveAlert()">Salvar alerta</button>
+      <button class="btn btn-ghost" onclick="closeAlertModal()">Cancelar</button>
+    </div>
+    <p class="modal-note">
+      ⚙️ Para ativar os alertas automáticos, configure as variáveis <code>ALERT_EMAIL</code> e <code>ALERT_WPP</code>
+      no GitHub Actions conforme o README.md.
+    </p>
+  </div>
+</div>
+
+<footer>
+  <p>✈️ <span>Radar de Vagas</span> · Atualizado automaticamente via GitHub Actions · Feito com 💛</p>
+</footer>
+
+<script>
+/* ──────────────────────────────────────────
+   Mapeamento de empresas aéreas → emoji/icone
+   ────────────────────────────────────────── */
+const AIRLINE_MAP = {
+  'latam':       { emoji: '🔵', name: 'LATAM Airlines' },
+  'gol':         { emoji: '🟠', name: 'GOL Linhas Aéreas' },
+  'azul':        { emoji: '🔷', name: 'Azul Linhas Aéreas' },
+  'voepass':     { emoji: '🟢', name: 'Voepass Linhas Aéreas' },
+  'swissport':   { emoji: '⚪', name: 'Swissport Brasil' },
+  'ogden':       { emoji: '🟤', name: 'Ogden Serviços' },
+  'dhl':         { emoji: '🟡', name: 'DHL Express' },
+  'fedex':       { emoji: '🟣', name: 'FedEx' },
+  'ups':         { emoji: '🟫', name: 'UPS Brasil' },
+  'infraero':    { emoji: '🏛️', name: 'Infraero' },
+  'gru airport': { emoji: '🏢', name: 'GRU Airport' },
+  'tam':         { emoji: '🔵', name: 'LATAM Airlines' },
+};
+
+function getAirlineInfo(name) {
+  const lower = (name || '').toLowerCase();
+  for (const [key, val] of Object.entries(AIRLINE_MAP)) {
+    if (lower.includes(key)) return val;
+  }
+  return { emoji: '🏢', name };
+}
+
+/* ──────────────────────────────────────────
+   Estado global
+   ────────────────────────────────────────── */
+let allJobs = [];
+let filteredJobs = [];
+
+/* ──────────────────────────────────────────
+   Carregar vagas — tenta jobs.json primeiro,
+   depois faz busca ao vivo na Gupy API
+   ────────────────────────────────────────── */
+async function loadJobs(forceRefresh = false) {
+  showLoading();
+  let jobs = [];
+
+  // 1. Tenta carregar jobs.json local (atualizado pelo scraper)
+  if (!forceRefresh) {
+    try {
+      const res = await fetch('jobs.json?t=' + Date.now());
+      if (res.ok) {
+        const data = await res.json();
+        jobs = data.jobs || [];
+        if (jobs.length > 0) {
+          setLastUpdated(data.updated_at);
+        }
+      }
+    } catch (e) { /* sem jobs.json, vai buscar ao vivo */ }
+  }
+
+  // 2. Se não tem jobs suficientes, busca ao vivo na Gupy
+  if (jobs.length === 0) {
+    jobs = await fetchGupyLive();
+    setLastUpdated(new Date().toISOString());
+  }
+
+  allJobs = jobs;
+  populateFilters(jobs);
+  applyFilters();
+}
+
+/* Busca ao vivo na API pública da Gupy */
+async function fetchGupyLive() {
+  const terms = [
+    'logistica',
+    'logística operacional',
+    'carga aérea',
+    'operações aeroportuárias',
+    'handling',
+  ];
+  const allResults = [];
+  const seen = new Set();
+
+  for (const term of terms) {
+    try {
+      const url = `https://portal.api.gupy.io/api/v1/jobs?jobName=${encodeURIComponent(term)}&cityName=S%C3%A3o+Paulo&limit=20`;
+      const res = await fetch(url);
+      if (!res.ok) continue;
+      const data = await res.json();
+      const jobs = data.data || [];
+      for (const j of jobs) {
+        if (!seen.has(j.id)) {
+          seen.add(j.id);
+          allResults.push(normalizeGupyJob(j));
+        }
+      }
+    } catch (e) { /* ignora erros individuais */ }
+    await sleep(200);
+  }
+
+  // Também busca por empresas aéreas específicas
+  const companySlugs = ['latam', 'gol', 'azul', 'voepass', 'swissport-brasil', 'infraero'];
+  for (const slug of companySlugs) {
+    try {
+      const url = `https://portal.api.gupy.io/api/v1/jobs?companySlug=${slug}&limit=10`;
+      const res = await fetch(url);
+      if (!res.ok) continue;
+      const data = await res.json();
+      const jobs = data.data || [];
+      for (const j of jobs) {
+        if (!seen.has(j.id)) {
+          seen.add(j.id);
+          allResults.push(normalizeGupyJob(j));
+        }
+      }
+    } catch (e) {}
+    await sleep(100);
+  }
+
+  return allResults;
+}
+
+function normalizeGupyJob(j) {
+  const info = getAirlineInfo(j.careerPageName || j.name || '');
+  return {
+    id:          j.id,
+    title:       j.name || 'Cargo não informado',
+    company:     j.careerPageName || info.name,
+    emoji:       info.emoji,
+    location:    [j.cityName, j.state].filter(Boolean).join(', ') || 'São Paulo, SP',
+    type:        normalizeType(j.type),
+    area:        j.department || 'Logística',
+    date_posted: j.publishedDate ? j.publishedDate.split('T')[0] : today(),
+    url:         j.jobUrl || `https://${j.careerPageSlug}.gupy.io/jobs/${j.id}`,
+    source:      'Gupy',
+    is_new:      isNew(j.publishedDate),
+  };
+}
+
+function normalizeType(raw) {
+  if (!raw) return 'CLT';
+  const r = raw.toLowerCase();
+  if (r.includes('effective') || r.includes('clt') || r.includes('full_time')) return 'CLT';
+  if (r.includes('pj') || r.includes('autonomo')) return 'PJ';
+  if (r.includes('intern') || r.includes('estagio') || r.includes('trainee')) return 'Estágio';
+  if (r.includes('temp') || r.includes('contract')) return 'Temporário';
+  return 'CLT';
+}
+
+function isNew(dateStr) {
+  if (!dateStr) return false;
+  const posted = new Date(dateStr);
+  const diff = (Date.now() - posted.getTime()) / 1000 / 60 / 60;
+  return diff < 48;
+}
+
+function today() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function sleep(ms) {
+  return new Promise(r => setTimeout(r, ms));
+}
+
+/* ──────────────────────────────────────────
+   Filtros
+   ────────────────────────────────────────── */
+function populateFilters(jobs) {
+  const companies = [...new Set(jobs.map(j => j.company))].sort();
+  const sel = document.getElementById('filter-company');
+  const current = sel.value;
+  sel.innerHTML = '<option value="">Todas as empresas</option>';
+  companies.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c;
+    opt.textContent = c;
+    sel.appendChild(opt);
+  });
+  sel.value = current;
+}
+
+function applyFilters() {
+  const query   = document.getElementById('search').value.toLowerCase();
+  const company = document.getElementById('filter-company').value;
+  const type    = document.getElementById('filter-type').value;
+  const area    = document.getElementById('filter-area').value;
+
+  filteredJobs = allJobs.filter(j => {
+    const matchQ = !query || j.title.toLowerCase().includes(query) || j.company.toLowerCase().includes(query);
+    const matchC = !company || j.company === company;
+    const matchT = !type    || j.type === type;
+    const matchA = !area    || (j.area || '').includes(area);
+    return matchQ && matchC && matchT && matchA;
+  });
+
+  renderJobs(filteredJobs);
+}
+
+/* ──────────────────────────────────────────
+   Renderização
+   ────────────────────────────────────────── */
+function renderJobs(jobs) {
+  const container = document.getElementById('jobs-list');
+  const newCount  = jobs.filter(j => j.is_new).length;
+  document.getElementById('job-count').textContent = jobs.length;
+  document.getElementById('new-count').textContent = newCount;
+
+  if (jobs.length === 0) {
+    container.innerHTML = `
+      <div class="board-message">
+        <div class="icon">🔎</div>
+        <p>Nenhuma vaga encontrada com esses filtros.<br/>Tente ampliar a busca.</p>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = jobs.map((j, i) => `
+    <div class="job-card${j.is_new ? ' is-new' : ''}" style="animation-delay:${i * 0.04}s">
+      <div class="job-company">
+        <div class="company-logo">${j.emoji || '🏢'}</div>
+        <div>
+          <div class="company-name">${esc(j.company)}</div>
+          <div class="company-src">${esc(j.source || 'Gupy')}</div>
+        </div>
+      </div>
+      <div>
+        <div class="job-title">${esc(j.title)}${j.is_new ? ' <span class="badge badge-new">NOVA</span>' : ''}</div>
+        <div class="job-location">📍 ${esc(j.location)}</div>
+      </div>
+      <div>
+        <span class="badge badge-${j.type === 'CLT' ? 'clt' : j.type === 'PJ' ? 'pj' : j.type === 'Estágio' ? 'est' : 'tmp'}">
+          ${esc(j.type)}
+        </span>
+      </div>
+      <div class="job-date">${formatDate(j.date_posted)}</div>
+      <div class="job-actions">
+        <a class="action-btn" href="${esc(j.url)}" target="_blank" rel="noopener" title="Ver vaga">🔗</a>
+        <button class="action-btn wpp" onclick="shareJobWpp(${i})" title="Compartilhar no WhatsApp">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function showLoading() {
+  document.getElementById('jobs-list').innerHTML = `
+    <div class="board-message">
+      <div class="spinner"></div>
+      <p>Rastreando vagas em companhias aéreas…</p>
+    </div>`;
+  document.getElementById('job-count').textContent = '—';
+  document.getElementById('new-count').textContent = '—';
+}
+
+function esc(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return '—';
+  try {
+    const d = new Date(dateStr + 'T00:00:00');
+    return d.toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit' });
+  } catch { return dateStr; }
+}
+
+function setLastUpdated(isoStr) {
+  if (!isoStr) return;
+  try {
+    const d = new Date(isoStr);
+    document.getElementById('last-updated').textContent =
+      'Atualizado ' + d.toLocaleString('pt-BR', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' });
+  } catch {}
+}
+
+/* ──────────────────────────────────────────
+   Compartilhamento
+   ────────────────────────────────────────── */
+function shareJobWpp(index) {
+  const j = filteredJobs[index];
+  if (!j) return;
+  const msg = `✈️ *Vaga de Logística Aérea — SP*\n\n*${j.title}*\n🏢 ${j.company}\n📍 ${j.location}\n💼 ${j.type}\n\n🔗 ${j.url}\n\n_Via Radar de Vagas_`;
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+
+function shareAll() {
+  const top5 = filteredJobs.slice(0, 5);
+  if (top5.length === 0) { alert('Nenhuma vaga para compartilhar.'); return; }
+  const lines = top5.map((j, i) => `${i+1}. *${j.title}* — ${j.company}\n   📍 ${j.location} | 💼 ${j.type}\n   🔗 ${j.url}`).join('\n\n');
+  const msg = `✈️ *Vagas de Logística Aérea — SP*\n\n${lines}\n\n_Radar de Vagas_`;
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+
+/* ──────────────────────────────────────────
+   Modal de alerta
+   ────────────────────────────────────────── */
+function openAlertModal()  { document.getElementById('alert-modal').classList.add('open'); }
+function closeAlertModal() { document.getElementById('alert-modal').classList.remove('open'); }
+
+function saveAlert() {
+  const email = document.getElementById('alert-email').value.trim();
+  const wpp   = document.getElementById('alert-wpp').value.trim();
+  if (!email && !wpp) { alert('Preencha ao menos o e-mail ou o WhatsApp.'); return; }
+  // Salva localmente para referência (configuração real é via env vars no Actions)
+  localStorage.setItem('alert_email', email);
+  localStorage.setItem('alert_wpp', wpp);
+  closeAlertModal();
+  alert('✅ Preferências salvas!\n\nPara receber alertas automáticos, configure ALERT_EMAIL e ALERT_WPP nas variáveis do GitHub Actions (veja o README.md).');
+}
+
+// Fecha modal ao clicar fora
+document.getElementById('alert-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeAlertModal();
+});
+
+/* ──────────────────────────────────────────
+   Init
+   ────────────────────────────────────────── */
+loadJobs();
+</script>
+</body>
+</html>
