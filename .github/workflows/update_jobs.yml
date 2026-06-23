@@ -1,0 +1,74 @@
+name: "✈️ Atualizar Vagas de Logística"
+
+on:
+  schedule:
+    # Roda às 07:00 e 12:00 (horário de Brasília = UTC-3, logo 10:00 e 15:00 UTC)
+    - cron: "0 10,15 * * 1-5"   # Segunda a sexta
+  workflow_dispatch:             # Permite rodar manualmente no GitHub
+
+permissions:
+  contents: write   # Necessário para commitar o jobs.json atualizado
+
+jobs:
+  scrape:
+    name: Buscar vagas e atualizar jobs.json
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout do repositório
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # 2. Configura Python
+      - name: 🐍 Configura Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      # 3. Instala dependências
+      - name: 📦 Instala dependências
+        run: pip install -r requirements.txt
+
+      # 4. Roda o scraper
+      - name: 🔍 Executa scraper
+        run: python scraper.py --notify
+        env:
+          # ── Alertas por E-mail (Gmail) ──────────────────────────────────
+          # Crie uma "Senha de app" em: myaccount.google.com/apppasswords
+          SMTP_HOST:    "smtp.gmail.com"
+          SMTP_PORT:    "587"
+          SMTP_USER:    ${{ secrets.SMTP_USER }}       # seuemail@gmail.com
+          SMTP_PASS:    ${{ secrets.SMTP_PASS }}       # Senha de app do Gmail
+          ALERT_EMAIL:  ${{ secrets.ALERT_EMAIL }}     # destinatario@email.com
+
+          # ── Alertas por WhatsApp (CallMeBot — grátis) ───────────────────
+          # Siga: https://www.callmebot.com/blog/free-api-whatsapp-messages/
+          ALERT_WPP:       ${{ secrets.ALERT_WPP }}       # 5511999999999
+          CALLMEBOT_KEY:   ${{ secrets.CALLMEBOT_KEY }}   # chave gerada pelo bot
+
+      # 5. Commita o jobs.json atualizado se mudou
+      - name: 💾 Commita vagas atualizadas
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add jobs.json
+          # Só commita se houver mudança real
+          git diff --cached --quiet || git commit -m "✈️ chore: atualiza vagas [$(date +'%d/%m %H:%M')]"
+          git push
+
+      # 6. Resumo da execução
+      - name: 📊 Resumo
+        if: always()
+        run: |
+          echo "### ✈️ Radar de Vagas — Resumo" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f jobs.json ]; then
+            TOTAL=$(python -c "import json; d=json.load(open('jobs.json')); print(d.get('total',0))")
+            NEW=$(python -c "import json; d=json.load(open('jobs.json')); print(d.get('new_count',0))")
+            echo "- 📋 Total de vagas: **$TOTAL**" >> $GITHUB_STEP_SUMMARY
+            echo "- 🆕 Vagas novas: **$NEW**" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "- 🕐 Executado em: $(date +'%d/%m/%Y %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
