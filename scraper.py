@@ -153,10 +153,20 @@ def fetch_gupy_by_term(term: str, limit: int = 30) -> list[dict]:
         "offset": 0,
     }
     try:
-        r = requests.get(GUPY_API_BASE, params=params, headers=HEADERS, timeout=15)
+        # Tentar primeiro com o endpoint alternativo que está respondendo
+        r = requests.get("https://portal.gupy.io/api/v1/jobs", params=params, headers=HEADERS, timeout=15)
         r.raise_for_status()
-        data = r.json()
-        return data.get("data", [])
+        
+        # Validar que a resposta é um JSON válido
+        if r.text.strip():
+            data = r.json()
+            return data.get("data", [])
+        else:
+            print(f"  [WARN] Gupy busca '{term}': resposta vazia")
+            return []
+    except requests.exceptions.JSONDecodeError:
+        print(f"  [WARN] Gupy busca '{term}': resposta JSON inválida")
+        return []
     except Exception as e:
         print(f"  [WARN] Gupy busca '{term}': {e}")
         return []
@@ -165,10 +175,20 @@ def fetch_gupy_by_term(term: str, limit: int = 30) -> list[dict]:
 def fetch_gupy_by_company(slug: str, limit: int = 20) -> list[dict]:
     params = {"companySlug": slug, "limit": limit}
     try:
-        r = requests.get(GUPY_API_BASE, params=params, headers=HEADERS, timeout=15)
+        # Usar o endpoint alternativo que está respondendo
+        r = requests.get("https://portal.gupy.io/api/v1/jobs", params=params, headers=HEADERS, timeout=15)
         r.raise_for_status()
-        data = r.json()
-        return data.get("data", [])
+        
+        # Validar que a resposta é um JSON válido
+        if r.text.strip():
+            data = r.json()
+            return data.get("data", [])
+        else:
+            print(f"  [WARN] Gupy empresa '{slug}': resposta vazia")
+            return []
+    except requests.exceptions.JSONDecodeError:
+        print(f"  [WARN] Gupy empresa '{slug}': resposta JSON inválida")
+        return []
     except Exception as e:
         print(f"  [WARN] Gupy empresa '{slug}': {e}")
         return []
@@ -197,32 +217,50 @@ def normalize_gupy(j: dict) -> dict:
 
 # ── Catho scraper ─────────────────────────────────────────────────────────────
 
-def fetch_catho(term: str = "logistica aeroporto", pages: int = 2) -> list[dict]:
+def fetch_catho(term: str = "logistica", pages: int = 1) -> list[dict]:
+    """
+    Busca vagas no Catho com URL simples.
+    Nota: O Catho pode ter limitações de scraping, então reduzido para 1 página por padrão.
+    """
     results = []
     for page in range(1, pages + 1):
-        url = (
-            f"https://www.catho.com.br/vagas/{term.replace(' ', '-')}/"
-            f"sao-paulo/?q={requests.utils.quote(term)}&page={page}"
-        )
+        # URL simplificada - Catho costuma bloquear scrapers
+        url = f"https://www.catho.com.br/vagas/{term}/"
+        
         try:
             r = requests.get(url, headers=HEADERS, timeout=15)
-            r.raise_for_status()
+            
+            # Se retornar 404, tenta com variações
+            if r.status_code == 404:
+                url = f"https://www.catho.com.br/vagas/{term}-sao-paulo/"
+                r = requests.get(url, headers=HEADERS, timeout=15)
+            
+            if r.status_code != 200:
+                print(f"  [WARN] Catho página {page}: HTTP {r.status_code}")
+                continue
+                
             soup = BeautifulSoup(r.text, "html.parser")
 
-            cards = soup.select("[data-testid='job-card'], .job-list-item, article")
+            # Tenta múltiplos seletores
+            cards = soup.select("[data-testid='job-card'], .job-list-item, article, .resultado")
+            
+            if not cards:
+                print(f"  [WARN] Catho: nenhuma vaga encontrada na página {page}")
+                continue
+                
             for card in cards:
                 title_el = card.select_one("h2, h3, .job-title, [data-testid='job-title']")
                 company_el = card.select_one(".company-name, [data-testid='company-name']")
                 loc_el = card.select_one(".job-location, [data-testid='job-location']")
                 link_el = card.select_one("a[href]")
 
-                if not title_el:
+                if not title_el or not link_el:
                     continue
 
                 title = title_el.get_text(strip=True)
                 company = company_el.get_text(strip=True) if company_el else "Empresa"
                 location = loc_el.get_text(strip=True) if loc_el else "São Paulo, SP"
-                href = link_el["href"] if link_el else ""
+                href = link_el["href"]
                 full_url = href if href.startswith("http") else f"https://www.catho.com.br{href}"
 
                 results.append({
@@ -246,39 +284,81 @@ def fetch_catho(term: str = "logistica aeroporto", pages: int = 2) -> list[dict]
 
 # ── Vagas.com scraper ─────────────────────────────────────────────────────────
 
-def fetch_vagas_com(term: str = "logistica aeroporto") -> list[dict]:
-    url = f"https://www.vagas.com.br/vagas-de-{term.replace(' ', '-')}-em-sao-paulo-sp"
+def fetch_vagas_com(terms: list = None, pages: int = 2) -> list[dict]:
+    """
+    Busca vagas no Vagas.com com múltiplos termos e páginas
+    Versão melhorada com melhor cobertura
+    """
+    if terms is None:
+        terms = [
+            "logistica-aerea",
+            "logistica",
+            "handling",
+            "ground-handling",
+            "carga-aerea",
+            "operacoes-aeroportuarias",
+        ]
+    
     results = []
-    try:
-        r = requests.get(url, headers=HEADERS, timeout=15)
-        r.raise_for_status()
-        soup = BeautifulSoup(r.text, "html.parser")
+    
+    for term in terms:
+        for page in range(1, pages + 1):
+            url = f"https://www.vagas.com.br/vagas-de-{term}-em-sao-paulo-sp?pagina={page}"
+            
+            try:
+                r = requests.get(url, headers=HEADERS, timeout=15)
+                
+                if r.status_code != 200:
+                    continue
+                
+                soup = BeautifulSoup(r.text, "html.parser")
+                cards = soup.select("li.vaga")
+                
+                if not cards:
+                    # Se não encontrou vagas, para de paginar este termo
+                    break
+                
+                for card in cards:
+                    # Título e link
+                    title_link = card.select_one("h2.cargo a")
+                    if not title_link:
+                        continue
+                    
+                    title = title_link.get_text(strip=True)
+                    href = title_link.get("href", "")
+                    
+                    # Empresa
+                    company_el = card.select_one("span.emprVaga")
+                    company = company_el.get_text(strip=True) if company_el else "Empresa"
+                    
+                    # Construir URL completa
+                    full_url = href if href.startswith("http") else f"https://www.vagas.com.br{href}"
+                    
+                    # ID único para evitar duplicatas
+                    vaga_id = f"vagas_{hash(full_url)}"
 
-        for card in soup.select(".job-shortdescription, li.vaga"):
-            title_el = card.select_one("h2 a, .cargo a")
-            company_el = card.select_one(".emprVaga, .employer")
-            href = title_el["href"] if title_el and title_el.get("href") else ""
-            if not title_el:
+                    results.append({
+                        "id":          vaga_id,
+                        "title":       title,
+                        "company":     company,
+                        "emoji":       airline_emoji(company),
+                        "location":    "São Paulo, SP",
+                        "type":        "CLT",
+                        "area":        "Logística",
+                        "date_posted": today(),
+                        "url":         full_url,
+                        "source":      "Vagas.com",
+                        "is_new":      True,
+                    })
+                
+                # Pequeno delay entre páginas
+                time.sleep(0.5)
+                
+            except Exception as e:
+                print(f"  [WARN] Vagas.com ({term}, página {page}): {e}")
                 continue
-
-            full_url = href if href.startswith("http") else f"https://www.vagas.com.br{href}"
-            company = company_el.get_text(strip=True) if company_el else "Empresa"
-
-            results.append({
-                "id":          f"vagas_{hash(full_url)}",
-                "title":       title_el.get_text(strip=True),
-                "company":     company,
-                "emoji":       airline_emoji(company),
-                "location":    "São Paulo, SP",
-                "type":        "CLT",
-                "area":        "Logística",
-                "date_posted": today(),
-                "url":         full_url,
-                "source":      "Vagas.com",
-                "is_new":      True,
-            })
-    except Exception as e:
-        print(f"  [WARN] Vagas.com: {e}")
+    
+    print(f"  ✓ Total de vagas encontradas no Vagas.com: {len(results)}")
     return results
 
 
@@ -288,37 +368,21 @@ def collect_all_jobs() -> list[dict]:
     seen = set()
     all_jobs = []
 
-    print("🔍 Buscando na Gupy por termos…")
-    for term in SEARCH_TERMS:
-        raw = fetch_gupy_by_term(term)
-        for j in raw:
-            jid = j.get("id")
-            if jid and jid not in seen:
-                normalized = normalize_gupy(j)
-                if is_relevant(normalized["title"], normalized["company"]):
-                    seen.add(jid)
-                    all_jobs.append(normalized)
-        time.sleep(0.4)
+    # ⚠️ Gupy e Catho desativadas (requerem Selenium/Playwright para conteúdo dinâmico)
+    # Veja CORRECAO_GUPY_CATHO.md para detalhes
 
-    print("✈️  Buscando em empresas aéreas específicas…")
-    for slug in COMPANY_SLUGS:
-        raw = fetch_gupy_by_company(slug)
-        for j in raw:
-            jid = j.get("id")
-            if jid and jid not in seen:
-                seen.add(jid)
-                all_jobs.append(normalize_gupy(j))
-        time.sleep(0.3)
-
-    print("🌐 Buscando no Catho…")
-    catho_jobs = fetch_catho("logistica aérea são paulo")
-    for j in catho_jobs:
-        if j["id"] not in seen:
-            seen.add(j["id"])
-            all_jobs.append(j)
-
-    print("🌐 Buscando no Vagas.com…")
-    vagas_jobs = fetch_vagas_com("logistica-aerea")
+    print("🌐 Buscando no Vagas.com (múltiplos termos e páginas)…")
+    vagas_jobs = fetch_vagas_com(
+        terms=[
+            "logistica-aerea",
+            "logistica-sao-paulo",
+            "ground-handling",
+            "carga-aerea",
+            "handling-aeroporto",
+        ],
+        pages=3  # Buscar até 3 páginas de cada termo
+    )
+    
     for j in vagas_jobs:
         if j["id"] not in seen:
             seen.add(j["id"])
