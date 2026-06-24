@@ -1,932 +1,1661 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Radar de Vagas ✈️ Logística Aérea · SP</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <style>
-    /* ── Design tokens ── */
-    :root {
-      --navy:    #07111F;
-      --panel:   #0D1E33;
-      --card:    #112240;
-      --border:  #1E3A5A;
-      --amber:   #F5A623;
-      --amber-d: #C4851A;
-      --sky:     #4EAFFF;
-      --text:    #CDD8E8;
-      --muted:   #627A97;
-      --green:   #22C55E;
-      --red:     #EF4444;
-      --white:   #EEF4FB;
-      --font-mono: 'IBM Plex Mono', monospace;
-      --font-sans: 'Inter', sans-serif;
-    }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>RadarVagas ✈️ — Logística Aérea · SP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ─── Tokens ─────────────────────────────────────────────── */
+:root {
+  --ink:      #060E1A;
+  --surf:     #0B1726;
+  --card:     #0F1F34;
+  --card-h:   #132540;
+  --rim:      #183558;
+  --rim-hi:   #1E4470;
+  --cyan:     #00C2FF;
+  --cyan-d:   #0098CC;
+  --cyan-glo: rgba(0,194,255,.18);
+  --green:    #10D9A0;
+  --green-d:  rgba(16,217,160,.14);
+  --amber:    #F59E0B;
+  --violet:   #8B7CF8;
+  --red:      #F87171;
+  --text:     #C9DCF0;
+  --sub:      #7A9DBB;
+  --muted:    #3E5E7A;
+  --white:    #EAF3FC;
+  --sg:       'Space Grotesk', sans-serif;
+  --jb:       'JetBrains Mono', monospace;
+  --in:       'Inter', sans-serif;
+  --r-sm:     6px;
+  --r-md:     10px;
+  --r-lg:     14px;
+}
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ─── Reset ──────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--in);
+  background: var(--ink);
+  color: var(--text);
+  min-height: 100vh;
+  /* dot-grid radar texture */
+  background-image: radial-gradient(circle, rgba(0,194,255,.06) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; font-family: inherit; }
 
-    body {
-      font-family: var(--font-sans);
-      background: var(--navy);
-      color: var(--text);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+/* ─── Scrollbar ──────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--surf); }
+::-webkit-scrollbar-thumb { background: var(--rim-hi); border-radius: 3px; }
 
-    /* ── Runway line (top signature element) ── */
-    .runway-bar {
-      height: 4px;
-      background: repeating-linear-gradient(90deg, var(--amber) 0 40px, transparent 40px 60px);
-      animation: runway-scroll 3s linear infinite;
-    }
-    @keyframes runway-scroll {
-      from { background-position: 0 0; }
-      to { background-position: 60px 0; }
-    }
+/* ─── Header ─────────────────────────────────────────────── */
+.hdr {
+  background: rgba(11,23,38,.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--rim);
+  position: sticky;
+  top: 0;
+  z-index: 80;
+}
+.hdr-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: .9rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+}
+.logo-mark {
+  width: 40px; height: 40px;
+  background: var(--cyan);
+  border-radius: var(--r-md);
+  display: grid;
+  place-items: center;
+  font-size: 1.15rem;
+  flex-shrink: 0;
+  box-shadow: 0 0 14px var(--cyan-glo);
+}
+.logo-txt { display: flex; flex-direction: column; gap: .05rem; }
+.logo-name {
+  font-family: var(--sg);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -.01em;
+}
+.logo-sub {
+  font-family: var(--jb);
+  font-size: .6rem;
+  color: var(--sub);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.hdr-right {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  flex-wrap: wrap;
+}
+.status-dot {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  font-family: var(--jb);
+  font-size: .65rem;
+  color: var(--green);
+  letter-spacing: .04em;
+}
+.status-dot::before {
+  content: '';
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green);
+  animation: pulse 2.2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+.last-upd {
+  font-family: var(--jb);
+  font-size: .62rem;
+  color: var(--muted);
+}
+.btn {
+  font-family: var(--sg);
+  font-size: .75rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--r-sm);
+  padding: .5rem 1rem;
+  letter-spacing: .01em;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.btn-cyan { background: var(--cyan); color: var(--ink); }
+.btn-cyan:hover { background: var(--cyan-d); box-shadow: 0 0 12px var(--cyan-glo); }
+.btn-ghost {
+  background: transparent;
+  color: var(--sub);
+  border: 1px solid var(--rim);
+}
+.btn-ghost:hover { border-color: var(--cyan); color: var(--cyan); }
+.btn-wpp {
+  background: #1FAD5B;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+.btn-wpp:hover { background: #178a48; }
+.btn-sm { padding: .38rem .75rem; font-size: .7rem; }
 
-    /* ── Header ── */
-    header {
-      background: linear-gradient(180deg, var(--panel) 0%, rgba(13, 30, 51, 0.95) 100%);
-      border-bottom: 1px solid var(--border);
-      padding: 2rem 1.25rem 1.75rem;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-      position: sticky;
-      top: 0;
-      z-index: 99;
-    }
-    .header-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-    .logo-icon {
-      width: 48px;
-      height: 48px;
-      background: linear-gradient(135deg, var(--amber) 0%, var(--amber-d) 100%);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      box-shadow: 0 4px 12px rgba(245, 166, 35, 0.3);
-    }
-    .logo-text h1 {
-      font-family: var(--font-mono);
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: var(--white);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-    .logo-text span {
-      font-size: 0.75rem;
-      color: var(--muted);
-      font-family: var(--font-mono);
-      letter-spacing: 0.06em;
-    }
-    .header-meta {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-    .pill {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      padding: 0.3rem 0.65rem;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      letter-spacing: 0.05em;
-    }
-    .pill-green {
-      border-color: var(--green);
-      color: var(--green);
-      background: rgba(34,197,94,0.08);
-    }
-    #last-updated {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: var(--muted);
-    }
+/* ─── Tab Nav ────────────────────────────────────────────── */
+.tab-nav {
+  background: var(--surf);
+  border-bottom: 1px solid var(--rim);
+}
+.tab-nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  overflow-x: auto;
+  gap: 0;
+  scrollbar-width: none;
+}
+.tab-nav-inner::-webkit-scrollbar { display: none; }
+.tab-btn {
+  font-family: var(--sg);
+  font-size: .78rem;
+  font-weight: 500;
+  padding: .75rem 1.15rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--sub);
+  margin-bottom: -1px;
+  white-space: nowrap;
+  transition: all .18s;
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+}
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active {
+  color: var(--cyan);
+  border-bottom-color: var(--cyan);
+  font-weight: 600;
+  text-shadow: 0 0 8px var(--cyan-glo);
+}
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
 
-    /* ── Controls ── */
-    .controls {
-      background: var(--panel);
-      border-bottom: 1px solid var(--border);
-      padding: 1rem 1.25rem;
-      position: sticky;
-      top: 0;
-      z-index: 50;
-    }
-    .controls-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-    .search-wrap {
-      position: relative;
-      flex: 1 1 220px;
-    }
-    .search-icon {
-      position: absolute;
-      left: 0.85rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--muted);
-      font-size: 0.95rem;
-      pointer-events: none;
-    }
-    input[type="text"], select {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--white);
-      font-family: var(--font-sans);
-      font-size: 0.875rem;
-      padding: 0.6rem 0.85rem;
-      outline: none;
-      width: 100%;
-      transition: border-color 0.2s;
-    }
-    input[type="text"] { padding-left: 2.2rem; }
-    input[type="text"]:focus, select:focus { border-color: var(--sky); }
-    select { flex: 0 1 auto; cursor: pointer; }
-    select option { background: var(--card); }
+/* ─── Jobs Layout ────────────────────────────────────────── */
+.jobs-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.25rem 1.5rem;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  grid-template-rows: auto auto 1fr;
+  gap: 1rem;
+}
+.jobs-topbar {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: .6rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.jobs-area-row {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+.jobs-area-row::-webkit-scrollbar { display: none; }
+.area-label {
+  font-family: var(--jb);
+  font-size: .6rem;
+  color: var(--muted);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  margin-right: .15rem;
+}
+.area-chip {
+  font-family: var(--sg);
+  font-size: .72rem;
+  font-weight: 500;
+  padding: .3rem .75rem;
+  border-radius: 999px;
+  border: 1px solid var(--rim);
+  color: var(--sub);
+  background: transparent;
+  white-space: nowrap;
+  transition: all .15s;
+  cursor: pointer;
+  position: relative;
+}
+.area-chip:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  background: var(--cyan-glo);
+}
+.area-chip.active {
+  background: var(--cyan-glo);
+  border-color: var(--cyan);
+  color: var(--cyan);
+  font-weight: 600;
+  box-shadow: 0 0 8px var(--cyan-glo);
+}
 
-    .btn {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      font-weight: 600;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      padding: 0.65rem 1.2rem;
-      letter-spacing: 0.04em;
-      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-      white-space: nowrap;
-      text-transform: uppercase;
-      position: relative;
-      overflow: hidden;
-    }
-    .btn::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-      transform: translateX(-100%);
-      transition: transform 0.4s;
-    }
-    .btn:hover::before { transform: translateX(100%); }
-    .btn-amber { 
-      background: linear-gradient(135deg, var(--amber) 0%, var(--amber-d) 100%);
-      color: #07111F; 
-      box-shadow: 0 4px 12px rgba(245, 166, 35, 0.2);
-    }
-    .btn-amber:hover { 
-      box-shadow: 0 6px 20px rgba(245, 166, 35, 0.4);
-      transform: translateY(-2px);
-    }
-    .btn-ghost {
-      background: rgba(17, 34, 64, 0.7);
-      color: var(--text);
-      border: 1px solid var(--border);
-      backdrop-filter: blur(10px);
-    }
-    .btn-ghost:hover { 
-      border-color: var(--sky); 
-      color: var(--sky); 
-      background: rgba(78, 175, 255, 0.1);
-      box-shadow: 0 0 20px rgba(78, 175, 255, 0.2);
-    }
-    .btn-wpp {
-      background: linear-gradient(135deg, #25D366 0%, #1da851 100%);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.25);
-    }
-    .btn-wpp:hover { 
-      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
-      transform: translateY(-2px);
-    }
+/* ─── Sidebar ────────────────────────────────────────────── */
+.sidebar {
+  grid-column: 1;
+  grid-row: 3;
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  align-self: start;
+  position: sticky;
+  top: 120px;
+}
+.sb-panel {
+  background: var(--surf);
+  border: 1px solid var(--rim);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+.sb-title {
+  font-family: var(--jb);
+  font-size: .6rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  padding: .65rem 1rem;
+  border-bottom: 1px solid var(--rim);
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+.sb-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+.sb-stat {
+  padding: .7rem .85rem;
+  display: flex;
+  flex-direction: column;
+  gap: .15rem;
+}
+.sb-stat:not(:last-child) { border-right: 1px solid var(--rim); border-bottom: 1px solid var(--rim); }
+.sb-stat:nth-child(2) { border-right: none; border-bottom: 1px solid var(--rim); }
+.sb-stat-n {
+  font-family: var(--jb);
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1;
+}
+.sb-stat-l {
+  font-family: var(--jb);
+  font-size: .58rem;
+  color: var(--muted);
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+.sb-src-list {
+  padding: .4rem 0;
+}
+.sb-src-item {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  padding: .45rem 1rem;
+  cursor: pointer;
+  transition: background .12s;
+}
+.sb-src-item:hover { background: rgba(255,255,255,.03); }
+.sb-src-item input[type=checkbox] {
+  width: 15px; height: 15px;
+  accent-color: var(--cyan);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.sb-src-name {
+  font-family: var(--sg);
+  font-size: .78rem;
+  color: var(--text);
+  flex: 1;
+}
+.sb-src-count {
+  font-family: var(--jb);
+  font-size: .62rem;
+  color: var(--muted);
+  background: var(--rim);
+  padding: .1rem .4rem;
+  border-radius: 999px;
+}
+.sb-airports {
+  padding: .5rem 1rem .65rem;
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+}
+.sb-apt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.sb-apt-name { font-size: .75rem; color: var(--text); }
+.sb-apt-code {
+  font-family: var(--jb);
+  font-size: .65rem;
+  color: var(--cyan);
+  background: var(--cyan-glo);
+  padding: .1rem .4rem;
+  border-radius: 4px;
+}
 
-    /* ── Stats bar ── */
-    .stats-bar {
-      max-width: 1100px;
-      margin: 1.25rem auto 0;
-      padding: 0 1.25rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-    .stats-left {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-    .count-label {
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      color: var(--muted);
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-    .count-num {
-      font-family: var(--font-mono);
-      font-size: 1.6rem;
-      font-weight: 600;
-      color: var(--amber);
-      line-height: 1;
-    }
+/* ─── Job List ───────────────────────────────────────────── */
+.job-list {
+  grid-column: 2;
+  grid-row: 3;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+.job-card {
+  background: var(--card);
+  border: 1px solid var(--rim);
+  border-radius: var(--r-lg);
+  padding: 1rem 1.15rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: background .15s, border-color .15s, transform .12s;
+  animation: fade-up .22s ease both;
+}
+.job-card:hover {
+  background: var(--card-h);
+  border-color: var(--rim-hi);
+  transform: translateX(2px);
+}
+.job-card.is-new { border-left: 2px solid var(--green); }
+@keyframes fade-up {
+  from { opacity:0; transform: translateY(8px); }
+  to   { opacity:1; transform: translateY(0); }
+}
 
-    /* ── Board header (departure-board style) ── */
-    .board-header {
-      max-width: 1100px;
-      margin: 1rem auto 0;
-      padding: 0 1.25rem;
-    }
-    .board-cols {
-      display: grid;
-      grid-template-columns: 2fr 3fr 1.5fr 1fr auto;
-      gap: 0.5rem;
-      padding: 0.5rem 1rem;
-      background: var(--border);
-      border-radius: 6px 6px 0 0;
-    }
-    .col-label {
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--amber);
-    }
+/* card company block */
+.jc-co {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  width: 185px;
+  flex-shrink: 0;
+}
+.jc-emo {
+  width: 36px; height: 36px;
+  background: var(--surf);
+  border: 1px solid var(--rim);
+  border-radius: var(--r-sm);
+  display: grid;
+  place-items: center;
+  font-size: 1.05rem;
+  flex-shrink: 0;
+}
+.jc-co-txt {}
+.jc-co-name {
+  font-family: var(--sg);
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--white);
+  line-height: 1.2;
+  letter-spacing: -.01em;
+}
+.jc-co-src {
+  font-family: var(--jb);
+  font-size: .58rem;
+  color: var(--muted);
+  letter-spacing: .04em;
+}
 
-    /* ── Jobs grid ── */
-    .jobs-container {
-      max-width: 1100px;
-      margin: 0 auto 2rem;
-      padding: 0 1.25rem;
-    }
+/* card body */
+.jc-body { flex: 1; min-width: 0; }
+.jc-title {
+  font-family: var(--sg);
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: -.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+.jc-meta {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  margin-top: .3rem;
+  flex-wrap: wrap;
+}
+.jc-loc {
+  font-family: var(--jb);
+  font-size: .62rem;
+  color: var(--sub);
+  display: flex;
+  align-items: center;
+  gap: .2rem;
+}
+.jc-area {
+  font-family: var(--sg);
+  font-size: .62rem;
+  color: var(--violet);
+  background: rgba(139,124,248,.1);
+  border: 1px solid rgba(139,124,248,.2);
+  padding: .1rem .4rem;
+  border-radius: 4px;
+}
 
-    .job-card {
-      display: grid;
-      grid-template-columns: 2fr 3fr 1.5fr 1fr auto;
-      gap: 0.5rem;
-      align-items: center;
-      padding: 1rem 1.2rem;
-      background: linear-gradient(135deg, rgba(17, 34, 64, 0.5) 0%, rgba(17, 34, 64, 0.3) 100%);
-      border: 1px solid var(--border);
-      border-top: none;
-      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-      cursor: default;
-      backdrop-filter: blur(10px);
-      position: relative;
-      overflow: hidden;
-    }
-    .job-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, rgba(78, 175, 255, 0.1), transparent, transparent);
-      transform: translateX(-100%);
-      transition: transform 0.4s;
-      pointer-events: none;
-    }
-    .job-card:hover {
-      background: linear-gradient(135deg, rgba(17, 34, 64, 0.8) 0%, rgba(17, 34, 64, 0.6) 100%);
-      border-color: var(--sky);
-      box-shadow: 0 8px 24px rgba(78, 175, 255, 0.15);
-      transform: translateY(-2px);
-    }
-    .job-card:hover::before { transform: translateX(100%); }
-    .job-card:last-child { border-radius: 0 0 6px 6px; }
+/* card right */
+.jc-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: .5rem;
+  flex-shrink: 0;
+}
+.jc-badges { display: flex; gap: .35rem; align-items: center; }
+.badge {
+  font-family: var(--jb);
+  font-size: .6rem;
+  font-weight: 600;
+  padding: .2rem .5rem;
+  border-radius: 5px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.b-clt  { background: rgba(0,194,255,.1);   color: var(--cyan);   border: 1px solid rgba(0,194,255,.2); }
+.b-pj   { background: rgba(245,158,11,.1);  color: var(--amber);  border: 1px solid rgba(245,158,11,.2); }
+.b-est  { background: rgba(16,217,160,.1);  color: var(--green);  border: 1px solid rgba(16,217,160,.2); }
+.b-tmp  { background: rgba(122,157,187,.1); color: var(--sub);    border: 1px solid rgba(122,157,187,.2); }
+.b-new  { background: rgba(16,217,160,.12); color: var(--green);  border: 1px solid var(--green); animation: new-glow 2s ease-in-out infinite; }
+@keyframes new-glow { 0%,100%{box-shadow:0 0 4px rgba(16,217,160,.3)} 50%{box-shadow:0 0 10px rgba(16,217,160,.6)} }
+.jc-date {
+  font-family: var(--jb);
+  font-size: .6rem;
+  color: var(--muted);
+}
+.jc-acts { display: flex; gap: .3rem; }
+.act {
+  width: 30px; height: 30px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--rim);
+  background: transparent;
+  color: var(--sub);
+  display: grid;
+  place-items: center;
+  font-size: .82rem;
+  transition: all .14s;
+}
+.act:hover { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-glo); }
+.act.wpp:hover { border-color: #1FAD5B; color: #1FAD5B; background: rgba(31,173,91,.1); }
+.act a { color: inherit; text-decoration: none; }
 
-    .job-card.is-new { border-left: 3px solid var(--green); }
+/* empty / loading */
+.board-empty {
+  background: var(--surf);
+  border: 1px solid var(--rim);
+  border-radius: var(--r-lg);
+  padding: 3rem 1.5rem;
+  text-align: center;
+  grid-column: 2;
+}
+.board-empty .icon { font-size: 2.2rem; margin-bottom: .6rem; }
+.board-empty p { font-family: var(--jb); font-size: .75rem; color: var(--muted); letter-spacing: .04em; line-height: 1.6; }
+.spinner {
+  width: 30px; height: 30px;
+  border: 2.5px solid var(--rim);
+  border-top-color: var(--cyan);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  margin: 0 auto .7rem;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
 
-    .job-company {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-    .company-logo {
-      width: 32px;
-      height: 32px;
-      border-radius: 6px;
-      background: var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-      flex-shrink: 0;
-    }
-    .company-name {
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--white);
-      letter-spacing: 0.04em;
-    }
-    .company-src {
-      font-size: 0.65rem;
-      color: var(--muted);
-    }
+/* ─── Topbar controls ────────────────────────────────────── */
+.search-box {
+  position: relative;
+  flex: 1 1 200px;
+}
+.search-box svg {
+  position: absolute;
+  left: .8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  pointer-events: none;
+}
+input[type=text], select {
+  font-family: var(--in);
+  font-size: .82rem;
+  background: var(--surf);
+  border: 1px solid var(--rim);
+  border-radius: var(--r-sm);
+  color: var(--white);
+  padding: .52rem .85rem;
+  outline: none;
+  width: 100%;
+  transition: border-color .15s;
+}
+input[type=text] { padding-left: 2.15rem; }
+input[type=text]:focus, select:focus { border-color: var(--cyan); }
+select { cursor: pointer; flex: 0 1 auto; }
+select option { background: var(--card); }
 
-    .job-title {
-      font-size: 0.875rem;
-      color: var(--white);
-      font-weight: 500;
-    }
-    .job-location {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: var(--muted);
-      margin-top: 0.2rem;
-    }
+/* ─── Career Tab ─────────────────────────────────────────── */
+.career-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.sec-hd {
+  display: flex;
+  align-items: baseline;
+  gap: .75rem;
+  margin-bottom: 1rem;
+}
+.sec-label {
+  font-family: var(--jb);
+  font-size: .6rem;
+  font-weight: 600;
+  color: var(--cyan);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.sec-title {
+  font-family: var(--sg);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -.02em;
+}
+.g2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 1rem; }
+.g3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: .75rem; }
+.panel {
+  background: var(--surf);
+  border: 1px solid var(--rim);
+  border-radius: var(--r-lg);
+  padding: 1.15rem;
+}
+.panel h3 {
+  font-family: var(--sg);
+  font-size: .88rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: .6rem;
+  letter-spacing: -.01em;
+}
+.panel p, .panel li {
+  font-size: .8rem;
+  color: var(--text);
+  line-height: 1.6;
+}
+.panel ul { padding-left: 1rem; display: flex; flex-direction: column; gap: .25rem; }
+.tag {
+  display: inline-block;
+  font-family: var(--jb);
+  font-size: .58rem;
+  padding: .15rem .42rem;
+  border-radius: 4px;
+  margin: .1rem .1rem 0 0;
+  letter-spacing: .03em;
+}
+.t-cyan { background: rgba(0,194,255,.1); color: var(--cyan); }
+.t-grn  { background: rgba(16,217,160,.1); color: var(--green); }
+.t-amb  { background: rgba(245,158,11,.1); color: var(--amber); }
+.t-vio  { background: rgba(139,124,248,.1); color: var(--violet); }
 
-    .badge {
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      padding: 0.25rem 0.5rem;
-      border-radius: 4px;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-    .badge-clt  { background: rgba(78,175,255,0.15); color: var(--sky); }
-    .badge-pj   { background: rgba(245,166,35,0.15); color: var(--amber); }
-    .badge-est  { background: rgba(34,197,94,0.15);  color: var(--green); }
-    .badge-tmp  { background: rgba(156,163,175,0.15); color: #9CA3AF; }
-    .badge-new  { background: rgba(34,197,94,0.2); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
+/* roadmap */
+.roadmap { display: flex; flex-direction: column; gap: 0; }
+.rm { display: flex; gap: .85rem; padding-bottom: 1.2rem; position: relative; }
+.rm:not(:last-child)::before {
+  content: ''; position: absolute;
+  left: 15px; top: 33px; bottom: 0;
+  width: 1px; background: var(--rim);
+}
+.rm-dot {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--rim);
+  display: grid; place-items: center;
+  font-family: var(--jb); font-size: .7rem;
+  color: var(--sub);
+  flex-shrink: 0; z-index: 1;
+}
+.rm-dot.on { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-glo); }
+.rm-body { flex: 1; }
+.rm-title { font-family: var(--sg); font-size: .84rem; font-weight: 600; color: var(--white); margin-bottom: .15rem; }
+.rm-sub { font-size: .75rem; color: var(--sub); line-height: 1.45; }
+.rm-sal { font-family: var(--jb); font-size: .68rem; color: var(--green); margin-top: .25rem; }
 
-    .job-date {
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      color: var(--muted);
-    }
+/* salary table */
+.sal-table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+.sal-table th {
+  font-family: var(--jb); font-size: .58rem;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--cyan); padding: .55rem .9rem;
+  text-align: left; border-bottom: 1px solid var(--rim);
+}
+.sal-table td {
+  padding: .58rem .9rem;
+  border-bottom: 1px solid rgba(24,53,88,.5);
+  color: var(--text);
+}
+.sal-table tr:last-child td { border-bottom: none; }
+.sal-table tr:hover td { background: rgba(255,255,255,.02); }
 
-    .job-actions {
-      display: flex;
-      gap: 0.4rem;
-    }
-    .action-btn {
-      width: 30px;
-      height: 30px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--muted);
-      font-size: 0.85rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.15s;
-      text-decoration: none;
-    }
-    .action-btn:hover { border-color: var(--amber); color: var(--amber); background: rgba(245,166,35,0.08); }
-    .action-btn.wpp:hover { border-color: #25D366; color: #25D366; background: rgba(37,211,102,0.08); }
+/* cert */
+.cert {
+  background: var(--card);
+  border: 1px solid var(--rim);
+  border-radius: var(--r-md);
+  padding: .9rem 1rem;
+  display: flex;
+  gap: .7rem;
+}
+.cert-ico { font-size: 1.4rem; flex-shrink: 0; line-height: 1; }
+.cert-h4 { font-family: var(--sg); font-size: .82rem; font-weight: 600; color: var(--white); margin-bottom: .2rem; }
+.cert-p  { font-size: .74rem; color: var(--sub); line-height: 1.4; }
+.cert-ln { color: var(--cyan); font-size: .7rem; }
 
-    /* ── Empty / loading ── */
-    .board-message {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-top: none;
-      border-radius: 0 0 6px 6px;
-      padding: 3rem 1rem;
-      text-align: center;
-    }
-    .board-message .icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
-    .board-message p { font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted); letter-spacing: 0.04em; }
-    .spinner {
-      width: 32px; height: 32px;
-      border: 3px solid var(--border);
-      border-top-color: var(--amber);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin: 0 auto 1rem;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
+/* ─── CV Tab ─────────────────────────────────────────────── */
+.cv-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+.cv-col { display: flex; flex-direction: column; gap: 1rem; }
+.progress-wrap {
+  background: var(--surf);
+  border: 1px solid var(--rim);
+  border-radius: var(--r-lg);
+  padding: 1rem;
+}
+.pbar-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: .5rem;
+}
+.pbar-label { font-family: var(--sg); font-size: .78rem; color: var(--text); font-weight: 500; }
+.pbar-pct   { font-family: var(--jb); font-size: .78rem; color: var(--green); }
+.pbar { height: 5px; background: var(--rim); border-radius: 3px; overflow: hidden; }
+.pbar-fill { height: 100%; background: linear-gradient(90deg, var(--cyan), var(--green)); border-radius: 3px; transition: width .3s; }
+.pbar-note { font-size: .7rem; color: var(--muted); margin-top: .4rem; }
+.checklist { list-style: none; display: flex; flex-direction: column; gap: .3rem; }
+.cl-item {
+  display: flex; align-items: flex-start; gap: .5rem;
+  font-size: .8rem; color: var(--text); line-height: 1.4;
+  cursor: pointer; padding: .35rem .5rem; border-radius: var(--r-sm);
+  transition: background .1s;
+}
+.cl-item:hover { background: rgba(255,255,255,.03); }
+.ck-box {
+  width: 17px; height: 17px;
+  border-radius: 4px;
+  border: 1.5px solid var(--rim-hi);
+  background: transparent; flex-shrink: 0;
+  display: grid; place-items: center;
+  margin-top: .1rem;
+  transition: all .14s;
+  font-size: .7rem; color: transparent;
+}
+.cl-item.done .ck-box { background: var(--green); border-color: var(--green); color: var(--ink); }
+.cl-item.done span  { text-decoration: line-through; color: var(--muted); }
+.kw-sec-lbl { font-family: var(--jb); font-size: .58rem; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; margin-bottom: .4rem; }
+.kw-cloud { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: .9rem; }
+.kw {
+  font-family: var(--sg); font-size: .68rem; font-weight: 500;
+  padding: .22rem .55rem; border-radius: 999px;
+  cursor: pointer; transition: all .14s; border: 1px solid;
+}
+.kw.hard { border-color: rgba(0,194,255,.25); color: var(--cyan); background: rgba(0,194,255,.07); }
+.kw.hard:hover { background: rgba(0,194,255,.18); }
+.kw.soft { border-color: rgba(245,158,11,.25); color: var(--amber); background: rgba(245,158,11,.07); }
+.kw.soft:hover { background: rgba(245,158,11,.18); }
+.kw.cert { border-color: rgba(16,217,160,.25); color: var(--green); background: rgba(16,217,160,.07); }
+.kw.cert:hover { background: rgba(16,217,160,.18); }
+.kw.vio  { border-color: rgba(139,124,248,.25); color: var(--violet); background: rgba(139,124,248,.07); }
+.kw.vio:hover { background: rgba(139,124,248,.18); }
+.obj-block {
+  background: var(--card);
+  border: 1px solid var(--rim);
+  border-radius: var(--r-md);
+  padding: 1rem;
+  font-size: .8rem; color: var(--text); line-height: 1.7;
+  position: relative;
+}
+.obj-block strong { color: var(--cyan); }
+.obj-copy-btn {
+  position: absolute; top: .6rem; right: .6rem;
+  font-family: var(--jb); font-size: .6rem;
+  background: var(--rim); border: none;
+  color: var(--sub); padding: .25rem .55rem;
+  border-radius: 4px; cursor: pointer; transition: all .14s;
+}
+.obj-copy-btn:hover { background: var(--rim-hi); color: var(--cyan); }
 
-    /* ── Alert modal ── */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(7,17,31,0.85);
-      z-index: 100;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem;
-    }
-    .modal-overlay.open { display: flex; }
-    .modal {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      max-width: 460px;
-      width: 100%;
-      padding: 1.75rem;
-    }
-    .modal h2 {
-      font-family: var(--font-mono);
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--white);
-      margin-bottom: 0.4rem;
-    }
-    .modal p { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.25rem; line-height: 1.6; }
-    .modal label { font-size: 0.8rem; color: var(--text); display: block; margin-bottom: 0.4rem; }
-    .modal input {
-      margin-bottom: 1rem;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--white);
-      font-size: 0.875rem;
-      padding: 0.6rem 0.85rem;
-      outline: none;
-      width: 100%;
-    }
-    .modal input:focus { border-color: var(--sky); }
-    .modal-actions { display: flex; gap: 0.75rem; }
-    .modal-note {
-      font-size: 0.72rem;
-      color: var(--muted);
-      margin-top: 1rem;
-      line-height: 1.5;
-      font-family: var(--font-mono);
-    }
+/* ─── Empresas Tab ───────────────────────────────────────── */
+.emp-page { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
+.emp-info {
+  background: rgba(0,194,255,.05);
+  border: 1px solid rgba(0,194,255,.15);
+  border-radius: var(--r-md);
+  padding: .8rem 1rem;
+  font-size: .8rem; color: var(--text);
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+}
+.emp-info strong { color: var(--cyan); }
+.emp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: .75rem; }
+.emp-card {
+  background: var(--card);
+  border: 1px solid var(--rim);
+  border-radius: var(--r-lg);
+  padding: 1rem;
+  display: flex; flex-direction: column; gap: .6rem;
+  transition: border-color .15s, transform .12s;
+}
+.emp-card:hover { border-color: var(--rim-hi); transform: translateY(-2px); }
+.emp-top { display: flex; align-items: center; gap: .65rem; }
+.emp-emo { font-size: 1.3rem; }
+.emp-name { font-family: var(--sg); font-size: .82rem; font-weight: 700; color: var(--white); letter-spacing: -.01em; }
+.emp-cat  { font-family: var(--jb); font-size: .58rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+.emp-desc { font-size: .76rem; color: var(--sub); line-height: 1.45; }
+.emp-links { display: flex; gap: .35rem; flex-wrap: wrap; }
+.emp-link {
+  font-family: var(--jb); font-size: .6rem;
+  padding: .2rem .5rem; border-radius: 4px;
+  border: 1px solid var(--rim); color: var(--muted);
+  transition: all .14s;
+}
+.emp-link:hover { border-color: var(--cyan); color: var(--cyan); }
+.emp-link.hi { border-color: rgba(0,194,255,.25); color: var(--cyan); background: rgba(0,194,255,.07); }
+.emp-link.hi:hover { background: rgba(0,194,255,.18); }
 
-    /* ── Footer ── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 1.25rem;
-      text-align: center;
-    }
-    footer p {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: var(--muted);
-      letter-spacing: 0.04em;
-    }
-    footer p span { color: var(--amber); }
+/* ─── Toast / Modal ──────────────────────────────────────── */
+.toast {
+  position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+  background: var(--surf); border: 1px solid var(--rim);
+  border-radius: var(--r-sm); padding: .5rem 1rem;
+  font-family: var(--jb); font-size: .7rem; color: var(--green);
+  opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 200;
+  white-space: nowrap;
+}
+.toast.show { opacity: 1; }
+.modal-ov {
+  display: none; position: fixed; inset: 0;
+  background: rgba(6,14,26,.88); z-index: 150;
+  align-items: center; justify-content: center; padding: 1.5rem;
+}
+.modal-ov.open { display: flex; }
+.modal {
+  background: var(--surf); border: 1px solid var(--rim);
+  border-radius: var(--r-lg); max-width: 440px; width: 100%; padding: 1.6rem;
+}
+.modal h2 { font-family: var(--sg); font-size: .95rem; font-weight: 700; color: var(--white); margin-bottom: .3rem; letter-spacing: -.01em; }
+.modal p { font-size: .8rem; color: var(--sub); margin-bottom: 1rem; line-height: 1.55; }
+.modal label { font-size: .75rem; color: var(--text); display: block; margin-bottom: .35rem; }
+.modal input { margin-bottom: .85rem; }
+.modal-acts { display: flex; gap: .6rem; }
+.modal-note { font-family: var(--jb); font-size: .63rem; color: var(--muted); margin-top: .85rem; line-height: 1.5; }
+.modal-note code { color: var(--cyan); }
 
-    /* ── Mobile ── */
-    @media (max-width: 700px) {
-      .board-cols { display: none; }
-      .job-card {
-        grid-template-columns: 1fr;
-        gap: 0.4rem;
-        padding: 1rem;
-      }
-      .job-actions { margin-top: 0.25rem; }
-      .stats-bar { flex-direction: column; align-items: flex-start; }
-      header { padding: 1rem; }
-    }
+/* ─── Footer ─────────────────────────────────────────────── */
+footer {
+  border-top: 1px solid var(--rim);
+  padding: 1rem 1.5rem;
+  text-align: center;
+}
+footer p {
+  font-family: var(--jb);
+  font-size: .62rem;
+  color: var(--muted);
+  letter-spacing: .04em;
+}
+footer span { color: var(--cyan); }
 
-    /* ── Flip-in animation ── */
-    @keyframes flip-in {
-      from { opacity: 0; transform: translateY(-8px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .job-card { animation: flip-in 0.25s ease both; }
-  </style>
+/* ─── Mobile ─────────────────────────────────────────────── */
+@media (max-width: 820px) {
+  .jobs-page {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+  .sidebar { grid-column: 1; grid-row: auto; position: static; flex-direction: row; flex-wrap: wrap; }
+  .sb-panel { flex: 1 1 200px; }
+  .job-list { grid-column: 1; }
+  .job-card { flex-wrap: wrap; gap: .75rem; }
+  .jc-co { width: 100%; }
+  .jc-right { flex-direction: row; align-items: center; width: 100%; justify-content: space-between; }
+  .cv-page { grid-template-columns: 1fr; padding: 1rem; }
+  .career-page { padding: 1rem; }
+  .emp-page { padding: 1rem; }
+}
+@media (max-width: 480px) {
+  .jobs-topbar { gap: .5rem; }
+  .logo-name { font-size: .88rem; }
+}
+</style>
 </head>
 <body>
 
-<div class="runway-bar"></div>
-
-<header>
-  <div class="header-inner">
+<!-- ── Header ── -->
+<header class="hdr">
+  <div class="hdr-inner">
     <div class="logo">
-      <div class="logo-icon">✈️</div>
-      <div class="logo-text">
-        <h1>Radar de Vagas</h1>
-        <span>Logística · Companhias Aéreas · São Paulo</span>
+      <div class="logo-mark">✈️</div>
+      <div class="logo-txt">
+        <span class="logo-name">RadarVagas</span>
+        <span class="logo-sub">Logística Aérea · São Paulo</span>
       </div>
     </div>
-    <div class="header-meta">
-      <span class="pill pill-green" id="status-pill">● AO VIVO</span>
-      <span id="last-updated">Carregando…</span>
-      <button class="btn btn-amber" onclick="openAlertModal()">🔔 Ativar alerta</button>
+    <div class="hdr-right">
+      <span class="status-dot">AO VIVO</span>
+      <span class="last-upd" id="last-upd">—</span>
+      <button class="btn btn-ghost btn-sm" onclick="loadJobs(true)" title="Atualizar vagas">↻ Atualizar</button>
+      <button class="btn btn-cyan btn-sm" onclick="openModal()">🔔 Alertas</button>
     </div>
   </div>
 </header>
 
-<div class="controls">
-  <div class="controls-inner">
-    <div class="search-wrap">
-      <span class="search-icon">🔍</span>
-      <input type="text" id="search" placeholder="Buscar cargo, empresa…" oninput="applyFilters()" />
+<!-- ── Tab Nav ── -->
+<nav class="tab-nav">
+  <div class="tab-nav-inner">
+    <button class="tab-btn active" onclick="switchTab('vagas',this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      Vagas
+    </button>
+    <button class="tab-btn" onclick="switchTab('carreira',this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      Guia de Carreira
+    </button>
+    <button class="tab-btn" onclick="switchTab('curriculo',this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      Currículo
+    </button>
+    <button class="tab-btn" onclick="switchTab('empresas',this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      Empresas
+    </button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════
+     TAB: VAGAS
+══════════════════════════════ -->
+<div class="tab-pane active" id="tab-vagas">
+<div class="jobs-page">
+
+  <!-- Top bar -->
+  <div class="jobs-topbar">
+    <div class="search-box">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" id="search" placeholder="Buscar cargo, empresa ou palavra-chave…" oninput="applyFilters()"/>
     </div>
-    <select id="filter-company" onchange="applyFilters()">
+    <select id="f-company" onchange="applyFilters()" style="min-width:140px">
       <option value="">Todas as empresas</option>
     </select>
-    <select id="filter-type" onchange="applyFilters()">
+    <select id="f-type" onchange="applyFilters()" style="min-width:120px">
       <option value="">Todos os contratos</option>
-      <option value="CLT">CLT</option>
-      <option value="PJ">PJ</option>
-      <option value="Estágio">Estágio</option>
-      <option value="Temporário">Temporário</option>
+      <option>CLT</option><option>PJ</option><option>Estágio</option><option>Temporário</option>
     </select>
-    <select id="filter-area" onchange="applyFilters()">
-      <option value="">Todas as áreas</option>
-      <option value="Logística">Logística</option>
-      <option value="Carga">Carga</option>
-      <option value="Operações">Operações</option>
-      <option value="Administração">Administração</option>
-      <option value="TI">TI</option>
-    </select>
-    <button class="btn btn-wpp" onclick="shareAll()">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.997 2C6.476 2 2 6.477 2 12c0 1.99.577 3.847 1.572 5.412L2.046 22l4.695-1.507A9.946 9.946 0 0011.997 22c5.521 0 9.997-4.477 9.997-10S17.518 2 11.997 2z" fill-opacity=".2"/></svg>
+    <button class="btn btn-wpp btn-sm" onclick="shareAll()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51-.17-.01-.37-.01-.57-.01-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.06 2.87 1.21 3.07.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41z"/></svg>
       Compartilhar
     </button>
   </div>
+
+  <!-- Area chips -->
+  <div class="jobs-area-row">
+    <span class="area-label">Área:</span>
+    <button class="area-chip active" data-area="" onclick="setArea(this)">Todas</button>
+    <button class="area-chip" data-area="Logística" onclick="setArea(this)">Logística</button>
+    <button class="area-chip" data-area="Carga" onclick="setArea(this)">Carga Aérea</button>
+    <button class="area-chip" data-area="Operações" onclick="setArea(this)">Operações</button>
+    <button class="area-chip" data-area="Importação" onclick="setArea(this)">Importação / Exportação</button>
+    <button class="area-chip" data-area="Supply" onclick="setArea(this)">Supply Chain</button>
+    <button class="area-chip" data-area="Administração" onclick="setArea(this)">Administração</button>
+    <button class="area-chip" data-area="TI" onclick="setArea(this)">TI</button>
+    <button class="area-chip" data-area="Financeiro" onclick="setArea(this)">Financeiro</button>
+    <button class="area-chip" data-area="RH" onclick="setArea(this)">RH</button>
+    <button class="area-chip" data-area="Estágio" onclick="setArea(this)">Estágio</button>
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+
+    <div class="sb-panel">
+      <div class="sb-title">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+        Resultados
+      </div>
+      <div class="sb-stats">
+        <div class="sb-stat">
+          <span class="sb-stat-n" id="c-total" style="color:var(--cyan)">—</span>
+          <span class="sb-stat-l">Vagas</span>
+        </div>
+        <div class="sb-stat">
+          <span class="sb-stat-n" id="c-new" style="color:var(--green)">—</span>
+          <span class="sb-stat-l">Novas</span>
+        </div>
+        <div class="sb-stat" style="border-bottom:none">
+          <span class="sb-stat-n" id="c-co" style="color:var(--violet)">—</span>
+          <span class="sb-stat-l">Empresas</span>
+        </div>
+        <div class="sb-stat" style="border-bottom:none;border-right:none">
+          <span class="sb-stat-n" id="c-src" style="color:var(--amber)">—</span>
+          <span class="sb-stat-l">Fontes</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sb-panel">
+      <div class="sb-title">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Fontes
+      </div>
+      <div class="sb-src-list" id="sb-sources">
+        <!-- populated by JS -->
+      </div>
+    </div>
+
+    <div class="sb-panel">
+      <div class="sb-title">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        Aeroportos SP
+      </div>
+      <div class="sb-airports">
+        <div class="sb-apt"><span class="sb-apt-name">Guarulhos (Cumbica)</span><span class="sb-apt-code">GRU</span></div>
+        <div class="sb-apt"><span class="sb-apt-name">Congonhas</span><span class="sb-apt-code">CGH</span></div>
+        <div class="sb-apt"><span class="sb-apt-name">Campinas (Viracopos)</span><span class="sb-apt-code">VCP</span></div>
+        <div class="sb-apt"><span class="sb-apt-name">Campo de Marte</span><span class="sb-apt-code">MAE</span></div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- Job list -->
+  <div id="job-list" class="job-list"></div>
+
+</div>
 </div>
 
-<div class="stats-bar">
-  <div class="stats-left">
-    <div>
-      <div class="count-label">Vagas encontradas</div>
-      <div class="count-num" id="job-count">—</div>
+<!-- ══════════════════════════════
+     TAB: CARREIRA
+══════════════════════════════ -->
+<div class="tab-pane" id="tab-carreira">
+<div class="career-page">
+
+  <!-- Roadmap -->
+  <section>
+    <div class="sec-hd">
+      <span class="sec-label">01 — Trilha</span>
+      <h2 class="sec-title">Progressão de Carreira — Logística Aeroportuária</h2>
     </div>
-    <div>
-      <div class="count-label">Novas hoje</div>
-      <div class="count-num" style="color:var(--green)" id="new-count">—</div>
+    <div class="panel">
+      <div class="roadmap">
+        <div class="rm"><div class="rm-dot on">1</div><div class="rm-body">
+          <div class="rm-title">Entrada — Auxiliar / Operador de Logística</div>
+          <div class="rm-sub">Operações de rampa, handling, estoque e expedição. Requisito: Ensino Médio. CNH-B é diferencial. Escala 6×1.</div>
+          <div class="rm-sal">💰 R$ 1.700 – R$ 2.800 CLT</div>
+        </div></div>
+        <div class="rm"><div class="rm-dot">2</div><div class="rm-body">
+          <div class="rm-title">Júnior — Assistente / Analista Jr de Logística</div>
+          <div class="rm-sub">2–3 anos de exp. Controle de estoque, ERP básico (SAP / TOTVS), relatórios operacionais, carga aérea doméstica.</div>
+          <div class="rm-sal">💰 R$ 2.800 – R$ 4.500 CLT</div>
+        </div></div>
+        <div class="rm"><div class="rm-dot">3</div><div class="rm-body">
+          <div class="rm-title">Pleno — Analista / Coordenador de Carga Aérea</div>
+          <div class="rm-sub">3–6 anos. Importação/exportação, documentação aduaneira, RBAC 175, inglês intermediário recomendado.</div>
+          <div class="rm-sal">💰 R$ 4.500 – R$ 8.000 CLT</div>
+        </div></div>
+        <div class="rm"><div class="rm-dot">4</div><div class="rm-body">
+          <div class="rm-title">Sênior — Supervisor / Gerente de Operações</div>
+          <div class="rm-sub">6–10 anos. Gestão de equipes, KPIs, SLA, negociação com fornecedores, compliance ANAC / IATA, inglês fluente.</div>
+          <div class="rm-sal">💰 R$ 8.000 – R$ 18.000 CLT</div>
+        </div></div>
+        <div class="rm"><div class="rm-dot">5</div><div class="rm-body">
+          <div class="rm-title">Especialista — Gerente de Logística / Supply Chain</div>
+          <div class="rm-sub">10+ anos. Planejamento estratégico, projetos de melhoria, MBA, certificação IATA/FIATA, gestão de budget.</div>
+          <div class="rm-sal">💰 R$ 15.000 – R$ 35.000+ CLT</div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Salários -->
+  <section>
+    <div class="sec-hd">
+      <span class="sec-label">02 — Salários</span>
+      <h2 class="sec-title">Faixas Salariais — São Paulo 2026</h2>
+    </div>
+    <div class="panel" style="padding:0;overflow:hidden">
+      <table class="sal-table">
+        <thead><tr>
+          <th>Cargo</th><th>Faixa CLT</th><th>Empresa típica</th><th>Diferencial</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>Auxiliar de Logística</td><td style="color:var(--green)">R$ 1.800–2.500</td><td>Swissport, Ogden</td><td>Adicional noturno + insalubridade</td></tr>
+          <tr><td>Operador de Carga</td><td style="color:var(--green)">R$ 2.200–3.200</td><td>LATAM Cargo, GOL</td><td>HE + PLR anual</td></tr>
+          <tr><td>Assistente de Logística</td><td style="color:var(--green)">R$ 2.800–3.800</td><td>DHL, FedEx</td><td>VA + plano de saúde</td></tr>
+          <tr><td>Analista de Logística Jr</td><td style="color:var(--cyan)">R$ 3.500–5.000</td><td>LATAM, Azul</td><td>Plano de saúde top</td></tr>
+          <tr><td>Analista de Import/Export</td><td style="color:var(--cyan)">R$ 4.500–6.500</td><td>DHL, UPS</td><td>Inglês obrigatório</td></tr>
+          <tr><td>Coordenador de Carga Aérea</td><td style="color:var(--amber)">R$ 5.500–8.500</td><td>LATAM Cargo</td><td>Cert. IATA + ANAC</td></tr>
+          <tr><td>Supervisor de Operações</td><td style="color:var(--amber)">R$ 7.000–12.000</td><td>GRU Airport</td><td>Gestão de turno</td></tr>
+          <tr><td>Gerente de Logística</td><td style="color:var(--amber)">R$ 12.000–22.000</td><td>DHL, FedEx</td><td>MBA + inglês fluente</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Certificações -->
+  <section>
+    <div class="sec-hd">
+      <span class="sec-label">03 — Certificações</span>
+      <h2 class="sec-title">Certificações que Abrem Portas</h2>
+    </div>
+    <div class="g2">
+      <div class="cert"><div class="cert-ico">🛡️</div><div>
+        <div class="cert-h4">ASAC — Agente de Segurança de Aviação Civil</div>
+        <div class="cert-p">Obrigatório para trabalhar em áreas restritas do aeroporto. 40h, emitido pela ANAC.</div>
+        <div style="margin-top:.4rem"><span class="tag t-grn">Obrigatório</span><span class="tag t-cyan">40h</span><span class="tag t-amb">R$ 300–600</span></div>
+        <div style="margin-top:.4rem"><a href="https://www.anac.gov.br" target="_blank" class="cert-ln">↗ anac.gov.br</a></div>
+      </div></div>
+      <div class="cert"><div class="cert-ico">☢️</div><div>
+        <div class="cert-h4">IATA DGR — Dangerous Goods Regulations</div>
+        <div class="cert-p">Certificação internacional para transporte de artigos perigosos. Exigida por LATAM, GOL, DHL, FedEx.</div>
+        <div style="margin-top:.4rem"><span class="tag t-grn">Muito valorizado</span><span class="tag t-cyan">24–40h</span></div>
+        <div style="margin-top:.4rem"><a href="https://www.iata.org/training" target="_blank" class="cert-ln">↗ iata.org/training</a></div>
+      </div></div>
+      <div class="cert"><div class="cert-ico">✈️</div><div>
+        <div class="cert-h4">IATA GHM — Ground Handling Management</div>
+        <div class="cert-p">Gestão de operações em solo (rampa, bagagem, cargas). Diferencial para supervisores e coordenadores.</div>
+        <div style="margin-top:.4rem"><span class="tag t-amb">Avançado</span><span class="tag t-cyan">Online disponível</span></div>
+        <div style="margin-top:.4rem"><a href="https://www.iata.org/training" target="_blank" class="cert-ln">↗ iata.org/training</a></div>
+      </div></div>
+      <div class="cert"><div class="cert-ico">🏭</div><div>
+        <div class="cert-h4">SENAI — Logística Aeroportuária</div>
+        <div class="cert-p">Curso técnico reconhecido, parcerias com LATAM e GOL. Unidades em Guarulhos e Santo André.</div>
+        <div style="margin-top:.4rem"><span class="tag t-grn">Gratuito</span><span class="tag t-cyan">6–12 meses</span></div>
+        <div style="margin-top:.4rem"><a href="https://www.sp.senai.br" target="_blank" class="cert-ln">↗ sp.senai.br</a></div>
+      </div></div>
+      <div class="cert"><div class="cert-ico">🎓</div><div>
+        <div class="cert-h4">FATEC — Tecnologia em Logística Aeroportuária</div>
+        <div class="cert-p">Curso superior gratuito de 3 anos. FATEC Guarulhos. Vestibular VUNESP anual.</div>
+        <div style="margin-top:.4rem"><span class="tag t-grn">Gratuito</span><span class="tag t-cyan">3 anos</span></div>
+        <div style="margin-top:.4rem"><a href="https://vestibular.fatec.sp.gov.br" target="_blank" class="cert-ln">↗ vestibular.fatec.sp.gov.br</a></div>
+      </div></div>
+      <div class="cert"><div class="cert-ico">📦</div><div>
+        <div class="cert-h4">RBAC 175 — Artigos Perigosos (ANAC)</div>
+        <div class="cert-p">Obrigatório para quem lida com carga. Regulamentação brasileira equivalente ao DGR IATA.</div>
+        <div style="margin-top:.4rem"><span class="tag t-grn">Obrigatório para carga</span><span class="tag t-amb">R$ 400–900</span></div>
+        <div style="margin-top:.4rem"><a href="https://concepta.com.br" target="_blank" class="cert-ln">↗ concepta.com.br</a></div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- Dicas -->
+  <section>
+    <div class="sec-hd">
+      <span class="sec-label">04 — Dicas</span>
+      <h2 class="sec-title">LinkedIn, Entrevista e Sistemas</h2>
+    </div>
+    <div class="g2">
+      <div class="panel">
+        <h3>📱 LinkedIn — Otimize seu Perfil</h3>
+        <ul>
+          <li>Título: <em>"Analista de Logística Aeroportuária | Carga Aérea | SP"</em></li>
+          <li>Ative "Aberto a oportunidades" (invisível para empregador atual)</li>
+          <li>Siga: LATAM, GOL, Azul, Swissport Brasil, GRU Airport</li>
+          <li>Grupos: "Logística Brasil", "Aviação Civil BR", "IATA Members BR"</li>
+          <li>Conecte-se com recrutadores de companhias aéreas em GRU</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>🎯 Na Entrevista — O que Dizer</h3>
+        <ul>
+          <li><strong style="color:var(--cyan)">Pesquise a empresa:</strong> rotas, hubs, modal aéreo vs modal rodoviário</li>
+          <li><strong style="color:var(--cyan)">Disponibilidade:</strong> confirme turnos rotativos e finais de semana</li>
+          <li><strong style="color:var(--cyan)">Números:</strong> "Reduzi 15% no tempo de expedição" — sempre com dados</li>
+          <li><strong style="color:var(--cyan)">Inglês:</strong> mesmo básico, mencione — diferencial em qualquer cia. aérea</li>
+          <li><strong style="color:var(--cyan)">Segurança:</strong> mostre que é cultura, não burocracia</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>💻 Sistemas usados pelas empresas</h3>
+        <div class="kw-cloud" style="margin-top:.4rem">
+          <span class="kw hard">SAP</span><span class="kw hard">TOTVS</span><span class="kw hard">WMS</span>
+          <span class="kw hard">TMS</span><span class="kw hard">Jeppesen</span><span class="kw hard">SITA</span>
+          <span class="kw hard">AIMS</span><span class="kw hard">CargoWise</span>
+          <span class="kw hard">Excel Avançado</span><span class="kw hard">Power BI</span>
+          <span class="kw hard">RFID</span><span class="kw hard">ERP Logístico</span>
+        </div>
+        <p style="font-size:.73rem;color:var(--muted);margin-top:.3rem">Conhecer 2–3 desses aumenta muito a aprovação.</p>
+      </div>
+      <div class="panel">
+        <h3>🏫 Eventos e Feiras de Emprego</h3>
+        <ul>
+          <li><strong style="color:var(--cyan)">ExpoLog</strong> — maior feira de logística da AL, empresas recrutam no local</li>
+          <li><strong style="color:var(--cyan)">Fórum Aviação Civil SP</strong> — networking com profissionais do setor</li>
+          <li><strong style="color:var(--cyan)">SINDAERO</strong> — sindicato do setor, lista vagas e dá suporte jurídico</li>
+          <li><strong style="color:var(--cyan)">ABAG</strong> — Associação Brasileira de Aviação Geral, eventos e cursos</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════
+     TAB: CURRÍCULO
+══════════════════════════════ -->
+<div class="tab-pane" id="tab-curriculo">
+<div class="cv-page">
+
+  <div class="cv-col">
+    <!-- Progress -->
+    <div class="progress-wrap">
+      <div class="pbar-row">
+        <span class="pbar-label">Checklist ATS — Currículo</span>
+        <span class="pbar-pct" id="pct">0%</span>
+      </div>
+      <div class="pbar"><div class="pbar-fill" id="pbar" style="width:0%"></div></div>
+      <p class="pbar-note">Clique nos itens para marcar como concluído</p>
+    </div>
+
+    <!-- Checklist -->
+    <div class="panel" style="padding:1rem">
+      <div class="sec-label" style="margin-bottom:.75rem">✅ Itens obrigatórios</div>
+      <ul class="checklist" id="cl">
+        <li class="cl-item" onclick="toggleCl(this)"><div class="ck-box">✓</div><span>Formato PDF, fonte Arial ou Calibri 10–11pt, máx. 2 páginas</span></li>
+        <li class="cl-item" onclick="toggleCl(this)"><div class="ck-box">✓</div><span>Sem tabelas, imagens ou gráficos — confundem o ATS</span></li>
+        <li class="cl-item" onclick="toggleCl(this)"><div class="ck-box">✓</div><span>Nome, telefone, e-mail e LinkedIn no cabeçalho</span></li>
+        <li class="cl-item" onclick="toggleCl(this)"><div class="ck-box">✓</div><span>Objetivo profissional de 3–4 linhas com palavras-chave da vaga</span></li>
+        <li class="cl-item" onclick="toggleCl(this)"><div class="ck-box">✓</div><span>Experiências com verbos de ação e números reais (%, R$, volumes)</span></li>
+        <li class="cl-item" onclick="toggleCl(this)"><div class="ck-box">✓</div><span>Seção "Habilidades" com termos idênticos ao anúncio da vaga</span></li>
+        <li class="cl-item" onclick="toggleCl(this)"><div class="ck-box">✓</div><span>Formação com nome do curso, instituição e ano de conclusão</span></li>
+        <li class="cl-item" onclick="toggleCl(this)"><div class="ck-box">✓</div><span>Certificações com nome exato e órgão emissor (ANAC, IATA)</span></li>
+        <li class="cl-item" onclick="toggleCl(this)"><div class="ck-box">✓</div><span>Currículo adaptado para cada vaga — nunca enviar o mesmo</span></li>
+        <li class="cl-item" onclick="toggleCl(this)"><div class="ck-box">✓</div><span>Idiomas com nível real: básico / intermediário / avançado / fluente</span></li>
+        <li class="cl-item" onclick="toggleCl(this)"><div class="ck-box">✓</div><span>LinkedIn com foto profissional e dados iguais ao currículo</span></li>
+        <li class="cl-item" onclick="toggleCl(this)"><div class="ck-box">✓</div><span>Testado em um verificador ATS antes de enviar</span></li>
+      </ul>
+    </div>
+
+    <!-- Erros -->
+    <div class="panel" style="padding:1rem">
+      <div class="sec-label" style="margin-bottom:.75rem">🚫 Elimina imediatamente</div>
+      <div style="display:flex;flex-direction:column;gap:.35rem">
+        <span style="font-size:.78rem;color:var(--red)">❌ Objetivo genérico: "busco oportunidade na área de logística"</span>
+        <span style="font-size:.78rem;color:var(--red)">❌ Gráfico de barras de habilidades (4/5 estrelas) — bloqueado pelo ATS</span>
+        <span style="font-size:.78rem;color:var(--red)">❌ Endereço completo com rua — coloque só "Guarulhos, SP"</span>
+        <span style="font-size:.78rem;color:var(--red)">❌ "Dinâmico", "proativo" sem exemplos com números</span>
+        <span style="font-size:.78rem;color:var(--red)">❌ Mais de 2 páginas para menos de 5 anos de experiência</span>
+        <span style="font-size:.78rem;color:var(--amber)">⚠️ Inglês "avançado" sem comprovação — coloque nível real</span>
+        <span style="font-size:.78rem;color:var(--amber)">⚠️ Gaps sem explicação breve — mencione cursos, cuidado familiar, etc.</span>
+      </div>
+    </div>
+
+    <!-- Sites -->
+    <div class="panel" style="padding:1rem">
+      <div class="sec-label" style="margin-bottom:.75rem">🔗 Criar currículo ATS-Ready</div>
+      <div style="display:flex;flex-direction:column;gap:.45rem">
+        <a href="https://onlinecurriculo.com.br" target="_blank" style="font-size:.8rem;color:var(--cyan)">↗ OnlineCurriculo.com.br — 100% grátis, ATS-friendly</a>
+        <a href="https://www.livecareer.com.br" target="_blank" style="font-size:.8rem;color:var(--cyan)">↗ LiveCareer.com.br — modelos validados</a>
+        <a href="https://www.canva.com/curriculos" target="_blank" style="font-size:.8rem;color:var(--cyan)">↗ Canva — use modelo simples (sem colunas sobrepostas)</a>
+        <a href="https://www.catho.com.br/curriculo" target="_blank" style="font-size:.8rem;color:var(--cyan)">↗ Catho — sobe automaticamente para vagas da plataforma</a>
+      </div>
     </div>
   </div>
-  <button class="btn btn-ghost" onclick="loadJobs(true)">↻ Atualizar</button>
-</div>
 
-<div class="board-header">
-  <div class="board-cols">
-    <span class="col-label">Empresa</span>
-    <span class="col-label">Cargo / Local</span>
-    <span class="col-label">Tipo</span>
-    <span class="col-label">Data</span>
-    <span class="col-label">Ações</span>
+  <div class="cv-col">
+    <!-- Keywords -->
+    <div class="panel" style="padding:1rem">
+      <div class="sec-label" style="margin-bottom:.65rem">🏷️ Palavras-chave — clique para copiar</div>
+      <div class="kw-sec-lbl">Hard Skills</div>
+      <div class="kw-cloud">
+        <span class="kw hard" onclick="cpKw(this)">Logística Aeroportuária</span>
+        <span class="kw hard" onclick="cpKw(this)">Carga Aérea</span>
+        <span class="kw hard" onclick="cpKw(this)">Ground Handling</span>
+        <span class="kw hard" onclick="cpKw(this)">Controle de Estoque</span>
+        <span class="kw hard" onclick="cpKw(this)">Expedição</span>
+        <span class="kw hard" onclick="cpKw(this)">WMS</span>
+        <span class="kw hard" onclick="cpKw(this)">SAP</span>
+        <span class="kw hard" onclick="cpKw(this)">TOTVS</span>
+        <span class="kw hard" onclick="cpKw(this)">Supply Chain</span>
+        <span class="kw hard" onclick="cpKw(this)">Importação e Exportação</span>
+        <span class="kw hard" onclick="cpKw(this)">Documentação Aduaneira</span>
+        <span class="kw hard" onclick="cpKw(this)">Despacho Aduaneiro</span>
+        <span class="kw hard" onclick="cpKw(this)">KPI Logístico</span>
+        <span class="kw hard" onclick="cpKw(this)">SLA</span>
+        <span class="kw hard" onclick="cpKw(this)">Excel Avançado</span>
+        <span class="kw hard" onclick="cpKw(this)">Power BI</span>
+        <span class="kw hard" onclick="cpKw(this)">Rastreamento de Cargas</span>
+        <span class="kw hard" onclick="cpKw(this)">Handling de Rampa</span>
+      </div>
+      <div class="kw-sec-lbl">Soft Skills</div>
+      <div class="kw-cloud">
+        <span class="kw soft" onclick="cpKw(this)">Trabalho em Turnos Rotativos</span>
+        <span class="kw soft" onclick="cpKw(this)">Gestão de Equipes</span>
+        <span class="kw soft" onclick="cpKw(this)">Resolução de Problemas</span>
+        <span class="kw soft" onclick="cpKw(this)">Cultura de Segurança</span>
+        <span class="kw soft" onclick="cpKw(this)">Foco em SLA</span>
+        <span class="kw soft" onclick="cpKw(this)">Orientação a Resultados</span>
+        <span class="kw soft" onclick="cpKw(this)">Gestão sob Pressão</span>
+        <span class="kw soft" onclick="cpKw(this)">Comunicação Assertiva</span>
+      </div>
+      <div class="kw-sec-lbl">Certificações</div>
+      <div class="kw-cloud">
+        <span class="kw cert" onclick="cpKw(this)">ASAC</span>
+        <span class="kw cert" onclick="cpKw(this)">IATA DGR</span>
+        <span class="kw cert" onclick="cpKw(this)">RBAC 175</span>
+        <span class="kw cert" onclick="cpKw(this)">IATA GHM</span>
+        <span class="kw cert" onclick="cpKw(this)">Artigos Perigosos</span>
+        <span class="kw cert" onclick="cpKw(this)">NR-35</span>
+        <span class="kw cert" onclick="cpKw(this)">NR-29</span>
+        <span class="kw cert" onclick="cpKw(this)">IATA Cargo</span>
+      </div>
+      <div class="kw-sec-lbl">Sistemas / Ferramentas</div>
+      <div class="kw-cloud">
+        <span class="kw vio" onclick="cpKw(this)">SAP Logistics</span>
+        <span class="kw vio" onclick="cpKw(this)">TOTVS Logix</span>
+        <span class="kw vio" onclick="cpKw(this)">WMS Infor</span>
+        <span class="kw vio" onclick="cpKw(this)">CargoWise</span>
+        <span class="kw vio" onclick="cpKw(this)">Power BI</span>
+        <span class="kw vio" onclick="cpKw(this)">Excel VBA</span>
+        <span class="kw vio" onclick="cpKw(this)">SITA</span>
+      </div>
+    </div>
+
+    <!-- Objetivo -->
+    <div class="panel" style="padding:1rem">
+      <div class="sec-label" style="margin-bottom:.65rem">📝 Modelo de Objetivo Profissional</div>
+      <div class="obj-block" id="obj-box">
+        Profissional de <strong>logística aeroportuária</strong> com [X] anos de experiência em
+        <strong>operações de carga aérea, controle de estoque e expedição</strong>.
+        Atuação em ambiente de alta demanda com foco em <strong>SLA e segurança operacional</strong>,
+        tendo reduzido [resultado mensurável]. Disponível para turnos rotativos.
+        Busco contribuir com a eficiência operacional da <strong>[EMPRESA]</strong>
+        no <strong>Aeroporto de Guarulhos (GRU)</strong>.
+        <button class="obj-copy-btn" onclick="cpObj()">📋 Copiar</button>
+      </div>
+    </div>
   </div>
+
+</div>
 </div>
 
-<div class="jobs-container" id="jobs-list"></div>
+<!-- ══════════════════════════════
+     TAB: EMPRESAS
+══════════════════════════════ -->
+<div class="tab-pane" id="tab-empresas">
+<div class="emp-page">
+  <div class="sec-hd" style="margin-bottom:1rem">
+    <span class="sec-label">Empresas</span>
+    <h2 class="sec-title">Onde Candidatar — Acesso Direto</h2>
+  </div>
+  <div class="emp-info">
+    💡 <strong>Dica:</strong> Cadastre seu currículo no banco de talentos de cada empresa mesmo sem vaga aberta.
+    Muitas contratações acontecem internamente antes de publicar a vaga.
+  </div>
+  <div class="emp-grid" id="emp-grid"></div>
+</div>
+</div>
 
-<!-- Alert Modal -->
-<div class="modal-overlay" id="alert-modal">
+<!-- MODAL -->
+<div class="modal-ov" id="modal">
   <div class="modal">
-    <h2>🔔 Ativar alertas de novas vagas</h2>
-    <p>Você receberá um aviso por e-mail ou WhatsApp toda vez que uma vaga nova aparecer.</p>
-    <label for="alert-email">Seu e-mail</label>
-    <input type="text" id="alert-email" placeholder="voce@email.com" />
-    <label for="alert-wpp">Seu WhatsApp (com DDD)</label>
-    <input type="text" id="alert-wpp" placeholder="11 9 9999-9999" />
-    <div class="modal-actions">
-      <button class="btn btn-amber" onclick="saveAlert()">Salvar alerta</button>
-      <button class="btn btn-ghost" onclick="closeAlertModal()">Cancelar</button>
+    <h2>🔔 Configurar alertas de vagas</h2>
+    <p>Salve seu e-mail e WhatsApp. Para os alertas automáticos funcionarem, configure os Secrets no GitHub Actions conforme o README.</p>
+    <label>E-mail</label>
+    <input type="text" id="al-email" placeholder="voce@email.com"/>
+    <label>WhatsApp (com DDD)</label>
+    <input type="text" id="al-wpp" placeholder="11 9 9999-9999"/>
+    <div class="modal-acts">
+      <button class="btn btn-cyan" onclick="saveAlert()">Salvar</button>
+      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
     </div>
-    <p class="modal-note">
-      ⚙️ Para ativar os alertas automáticos, configure as variáveis <code>ALERT_EMAIL</code> e <code>ALERT_WPP</code>
-      no GitHub Actions conforme o README.md.
-    </p>
+    <p class="modal-note">Configure <code>SMTP_USER</code>, <code>SMTP_PASS</code>, <code>ALERT_EMAIL</code> e <code>CALLMEBOT_KEY</code> em Settings → Secrets do repositório GitHub.</p>
   </div>
 </div>
+
+<div class="toast" id="toast"></div>
 
 <footer>
-  <p>✈️ <span>Radar de Vagas</span> · Atualizado automaticamente via GitHub Actions · Feito com 💛</p>
+  <p>✈️ <span>RadarVagas</span> · Fontes: Gupy · Adzuna · Jooble · Catho · Vagas.com · Atualizado automaticamente via GitHub Actions</p>
 </footer>
 
 <script>
-/* ──────────────────────────────────────────
-   Mapeamento de empresas aéreas → emoji/icone
-   ────────────────────────────────────────── */
-const AIRLINE_MAP = {
-  'latam':       { emoji: '🔵', name: 'LATAM Airlines' },
-  'gol':         { emoji: '🟠', name: 'GOL Linhas Aéreas' },
-  'azul':        { emoji: '🔷', name: 'Azul Linhas Aéreas' },
-  'voepass':     { emoji: '🟢', name: 'Voepass Linhas Aéreas' },
-  'swissport':   { emoji: '⚪', name: 'Swissport Brasil' },
-  'ogden':       { emoji: '🟤', name: 'Ogden Serviços' },
-  'dhl':         { emoji: '🟡', name: 'DHL Express' },
-  'fedex':       { emoji: '🟣', name: 'FedEx' },
-  'ups':         { emoji: '🟫', name: 'UPS Brasil' },
-  'infraero':    { emoji: '🏛️', name: 'Infraero' },
-  'gru airport': { emoji: '🏢', name: 'GRU Airport' },
-  'tam':         { emoji: '🔵', name: 'LATAM Airlines' },
-};
+/* ──────────────── DATA ────────────────────────────── */
+const COMPANIES = [
+  {emoji:"🔵",name:"LATAM Airlines",cat:"Companhia Aérea",desc:"Maior cia. aérea da América Latina. Hub em GRU e CGH. Vagas em LATAM Cargo, operações e handling.",links:[{l:"Gupy — Vagas",u:"https://latam.gupy.io",h:true},{l:"LinkedIn",u:"https://linkedin.com/company/latam-airlines"},{l:"Site Oficial",u:"https://www.latamairlines.com/br/pt/trabalhe-conosco"}]},
+  {emoji:"🟠",name:"GOL Linhas Aéreas",cat:"Companhia Aérea",desc:"2ª maior em voos domésticos. Hub em CGH e GRU. Vagas em operações, manutenção e logística.",links:[{l:"Gupy — Vagas",u:"https://gol.gupy.io",h:true},{l:"LinkedIn",u:"https://linkedin.com/company/gol-linhas-aereas"}]},
+  {emoji:"🔷",name:"Azul Linhas Aéreas",cat:"Companhia Aérea",desc:"Hub em VCP (Campinas). Crescimento acelerado em carga (Azul Cargo). Muito ativa em logística.",links:[{l:"Gupy — Vagas",u:"https://azul.gupy.io",h:true},{l:"Azul Cargo",u:"https://www.azulcargo.com.br"}]},
+  {emoji:"🟢",name:"Voepass",cat:"Cia. Regional",desc:"Aviação regional com foco no interior de SP. Em expansão. Vagas operacionais.",links:[{l:"LinkedIn",u:"https://linkedin.com/company/voepass",h:true},{l:"Site Oficial",u:"https://www.voepass.com.br"}]},
+  {emoji:"⚪",name:"Swissport Brasil",cat:"Ground Handling",desc:"Maior empresa de handling do mundo. Opera em GRU e CGH. Contrata constantemente: rampa, carga, atendimento.",links:[{l:"Gupy — Vagas",u:"https://swissport-brasil.gupy.io",h:true},{l:"LinkedIn",u:"https://linkedin.com/company/swissport"}]},
+  {emoji:"🟤",name:"Ogden / Aviapartner",cat:"Ground Handling",desc:"Serviços de handling e suporte em solo. Opera em aeroportos brasileiros. Vagas operacionais.",links:[{l:"Vagas.com",u:"https://www.vagas.com.br/empregos/ogden",h:true},{l:"LinkedIn",u:"https://linkedin.com/company/aviapartner"}]},
+  {emoji:"🏛️",name:"Infraero",cat:"Operador Público",desc:"Empresa pública. Opera CGH, Campo de Marte e outros. Concurso público + CLT.",links:[{l:"Concursos",u:"https://www.infraero.gov.br",h:true},{l:"LinkedIn",u:"https://linkedin.com/company/infraero"}]},
+  {emoji:"🏢",name:"GRU Airport",cat:"Operador Aeroportuário",desc:"Operador do GRU — maior aeroporto da AL. 40M passageiros/ano. Vagas em TI, operações e logística.",links:[{l:"Gupy — Vagas",u:"https://gruairport.gupy.io",h:true},{l:"Site Oficial",u:"https://www.gru.com.br/pt/o-aeroporto/trabalhe-conosco"}]},
+  {emoji:"🟡",name:"DHL Express Brasil",cat:"Carga Expressas",desc:"Líder mundial em courier. Centro logístico em GRU. Vagas em operações e coordenação.",links:[{l:"Vagas Oficiais",u:"https://careers.dhl.com/amer/pt",h:true},{l:"LinkedIn",u:"https://linkedin.com/company/dhl-express"}]},
+  {emoji:"🟣",name:"FedEx Brasil",cat:"Carga Expressas",desc:"Hub em GRU. Vagas em operações de carga, despacho aduaneiro e logística internacional.",links:[{l:"Gupy — Vagas",u:"https://fedex-brasil.gupy.io",h:true},{l:"Site Oficial",u:"https://careers.fedex.com/brazil"}]},
+  {emoji:"🟫",name:"UPS Brasil",cat:"Carga Expressas",desc:"Operações internacionais de carga expressas. Vagas em import/export e operações em GRU.",links:[{l:"Site Oficial",u:"https://jobs-ups.com/pt-BR",h:true},{l:"LinkedIn",u:"https://linkedin.com/company/ups"}]},
+  {emoji:"🚢",name:"JSL Logística",cat:"Logística Multimodal",desc:"Maior portfólio logístico do Brasil. Opera logística aeroportuária em parceria com cias. aéreas.",links:[{l:"Gupy — Vagas",u:"https://jsl.gupy.io",h:true},{l:"LinkedIn",u:"https://linkedin.com/company/jsl-sa"}]},
+];
 
-function getAirlineInfo(name) {
-  const lower = (name || '').toLowerCase();
-  for (const [key, val] of Object.entries(AIRLINE_MAP)) {
-    if (lower.includes(key)) return val;
-  }
-  return { emoji: '🏢', name };
+const AIRLINE_MAP = {latam:"🔵",gol:"🟠",azul:"🔷",voepass:"🟢",swissport:"⚪",ogden:"🟤",dhl:"🟡",fedex:"🟣",ups:"🟫",infraero:"🏛️","gru":"🏢",jsl:"🚢"};
+function getEmoji(n){const l=(n||"").toLowerCase();for(const[k,e]of Object.entries(AIRLINE_MAP)){if(l.includes(k))return e;}return "🏢";}
+
+/* ──────────────── STATE ───────────────────────────── */
+let allJobs=[], filtered=[], activeSrcs=new Set(), srcCounts={}, activeArea="";
+
+/* ──────────────── TABS ────────────────────────────── */
+function switchTab(id, btn){
+  document.querySelectorAll(".tab-pane").forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+  document.getElementById("tab-"+id).classList.add("active");
+  btn.classList.add("active");
 }
 
-/* ──────────────────────────────────────────
-   Estado global
-   ────────────────────────────────────────── */
-let allJobs = [];
-let filteredJobs = [];
-
-/* ──────────────────────────────────────────
-   Carregar vagas — tenta jobs.json primeiro,
-   depois faz busca ao vivo na Gupy API
-   ────────────────────────────────────────── */
-async function loadJobs(forceRefresh = false) {
-  showLoading();
-  let jobs = [];
-
-  // 1. Tenta carregar jobs.json local (atualizado pelo scraper)
-  if (!forceRefresh) {
-    try {
-      const res = await fetch('jobs.json?t=' + Date.now());
-      if (res.ok) {
-        const data = await res.json();
-        jobs = data.jobs || [];
-        if (jobs.length > 0) {
-          setLastUpdated(data.updated_at);
-        }
-      }
-    } catch (e) { /* sem jobs.json, vai buscar ao vivo */ }
-  }
-
-  // 2. Se não tem jobs suficientes, busca ao vivo na Gupy
-  if (jobs.length === 0) {
-    jobs = await fetchGupyLive();
-    setLastUpdated(new Date().toISOString());
-  }
-
-  allJobs = jobs;
-  populateFilters(jobs);
+/* ──────────────── AREA FILTER ─────────────────────── */
+function setArea(chip){
+  document.querySelectorAll(".area-chip").forEach(c=>c.classList.remove("active"));
+  chip.classList.add("active");
+  activeArea = chip.dataset.area;
   applyFilters();
 }
 
-/* Busca ao vivo na API pública da Gupy */
-async function fetchGupyLive() {
-  const terms = [
-    'logistica',
-    'logística operacional',
-    'carga aérea',
-    'operações aeroportuárias',
-    'handling',
-  ];
-  const allResults = [];
-  const seen = new Set();
+/* ──────────────── LOAD JOBS ───────────────────────── */
+async function loadJobs(force=false){
+  showLoading();
+  let jobs=[];
 
-  for (const term of terms) {
-    try {
-      const url = `https://portal.api.gupy.io/api/v1/jobs?jobName=${encodeURIComponent(term)}&cityName=S%C3%A3o+Paulo&limit=20`;
-      const res = await fetch(url);
-      if (!res.ok) continue;
-      const data = await res.json();
-      const jobs = data.data || [];
-      for (const j of jobs) {
-        if (!seen.has(j.id)) {
-          seen.add(j.id);
-          allResults.push(normalizeGupyJob(j));
-        }
-      }
-    } catch (e) { /* ignora erros individuais */ }
-    await sleep(200);
+  if(!force){
+    try{
+      const r=await fetch("jobs.json?t="+Date.now());
+      if(r.ok){const d=await r.json();jobs=d.jobs||[];if(jobs.length)setUpd(d.updated_at);}
+    }catch(e){}
   }
 
-  // Também busca por empresas aéreas específicas
-  const companySlugs = ['latam', 'gol', 'azul', 'voepass', 'swissport-brasil', 'infraero'];
-  for (const slug of companySlugs) {
-    try {
-      const url = `https://portal.api.gupy.io/api/v1/jobs?companySlug=${slug}&limit=10`;
-      const res = await fetch(url);
-      if (!res.ok) continue;
-      const data = await res.json();
-      const jobs = data.data || [];
-      for (const j of jobs) {
-        if (!seen.has(j.id)) {
-          seen.add(j.id);
-          allResults.push(normalizeGupyJob(j));
-        }
-      }
-    } catch (e) {}
-    await sleep(100);
+  if(!jobs.length){
+    jobs=await fetchGupy();
+    setUpd(new Date().toISOString());
   }
 
-  return allResults;
+  allJobs=jobs;
+  buildSrcCounts(jobs);
+  populateSrcSidebar();
+  populateCompSel(jobs);
+  applyFilters();
 }
 
-function normalizeGupyJob(j) {
-  const info = getAirlineInfo(j.careerPageName || j.name || '');
-  return {
-    id:          j.id,
-    title:       j.name || 'Cargo não informado',
-    company:     j.careerPageName || info.name,
-    emoji:       info.emoji,
-    location:    [j.cityName, j.state].filter(Boolean).join(', ') || 'São Paulo, SP',
-    type:        normalizeType(j.type),
-    area:        j.department || 'Logística',
-    date_posted: j.publishedDate ? j.publishedDate.split('T')[0] : today(),
-    url:         j.jobUrl || `https://${j.careerPageSlug}.gupy.io/jobs/${j.id}`,
-    source:      'Gupy',
-    is_new:      isNew(j.publishedDate),
-  };
+async function fetchGupy(){
+  const terms=["logistica","carga aérea","operações aeroportuárias","handling","analista logistica","coordenador logistica"];
+  const slugs=["latam","gol","azul","voepass","swissport-brasil","gruairport","dhl-express-brasil","fedex-brasil","ups-brasil","infraero","jsl"];
+  const seen=new Set(), out=[];
+  for(const t of terms){
+    try{const r=await fetch(`https://portal.api.gupy.io/api/v1/jobs?jobName=${encodeURIComponent(t)}&cityName=S%C3%A3o+Paulo&limit=20`);
+      if(!r.ok)continue;const d=await r.json();
+      for(const j of(d.data||[])){if(!seen.has(j.id)){seen.add(j.id);out.push(normG(j));}}}catch(e){}
+    await sl(280);
+  }
+  for(const s of slugs){
+    try{const r=await fetch(`https://portal.api.gupy.io/api/v1/jobs?companySlug=${s}&limit=10`);
+      if(!r.ok)continue;const d=await r.json();
+      for(const j of(d.data||[])){if(!seen.has(j.id)){seen.add(j.id);out.push(normG(j));}}}catch(e){}
+    await sl(150);
+  }
+  return out;
 }
 
-function normalizeType(raw) {
-  if (!raw) return 'CLT';
-  const r = raw.toLowerCase();
-  if (r.includes('effective') || r.includes('clt') || r.includes('full_time')) return 'CLT';
-  if (r.includes('pj') || r.includes('autonomo')) return 'PJ';
-  if (r.includes('intern') || r.includes('estagio') || r.includes('trainee')) return 'Estágio';
-  if (r.includes('temp') || r.includes('contract')) return 'Temporário';
-  return 'CLT';
+function normG(j){
+  const co=j.careerPageName||"Empresa";
+  const area=inferArea(j.name||"",j.department||"");
+  return{id:`g_${j.id}`,title:j.name||"Vaga",company:co,emoji:getEmoji(co),
+    location:[j.cityName,j.state].filter(Boolean).join(", ")||"São Paulo, SP",
+    type:normT(j.type||""),area,
+    date_posted:(j.publishedDate||"").split("T")[0]||today(),
+    url:j.jobUrl||`https://${j.careerPageSlug||""}.gupy.io/jobs/${j.id||""}`,
+    source:"Gupy",is_new:isNew(j.publishedDate||"")};
 }
 
-function isNew(dateStr) {
-  if (!dateStr) return false;
-  const posted = new Date(dateStr);
-  const diff = (Date.now() - posted.getTime()) / 1000 / 60 / 60;
-  return diff < 48;
+function inferArea(title, dept){
+  const t=(title+" "+dept).toLowerCase();
+  if(/import|export|aduan/.test(t)) return "Importação";
+  if(/carga|cargo|freight|frete/.test(t)) return "Carga";
+  if(/supply|cadeia|planejament/.test(t)) return "Supply";
+  if(/operat|rampa|ground|handling|ramp/.test(t)) return "Operações";
+  if(/ti |tecnol|sist|dados|data/.test(t)) return "TI";
+  if(/admin|secretar|recepç/.test(t)) return "Administração";
+  if(/financ|contas|contab|fiscal/.test(t)) return "Financeiro";
+  if(/rh|recursos human|talent|recruit/.test(t)) return "RH";
+  if(/estágio|estagio|trainee|aprendiz/.test(t)) return "Estágio";
+  return "Logística";
 }
 
-function today() {
-  return new Date().toISOString().split('T')[0];
+function normT(r){r=r.toLowerCase();
+  if(/effective|clt|full_time|permanent/.test(r))return "CLT";
+  if(/pj|autonomo/.test(r))return "PJ";
+  if(/intern|estagio|trainee/.test(r))return "Estágio";
+  if(/temp|contract/.test(r))return "Temporário";
+  return "CLT";
+}
+function isNew(d){try{return(Date.now()-new Date(d).getTime())/3.6e6<48}catch{return false}}
+function today(){return new Date().toISOString().split("T")[0]}
+function sl(ms){return new Promise(r=>setTimeout(r,ms))}
+
+/* ──────────────── SOURCES SIDEBAR ─────────────────── */
+function buildSrcCounts(jobs){
+  srcCounts={};
+  for(const j of jobs) srcCounts[j.source]=(srcCounts[j.source]||0)+1;
+  activeSrcs=new Set(Object.keys(srcCounts));
 }
 
-function sleep(ms) {
-  return new Promise(r => setTimeout(r, ms));
+function populateSrcSidebar(){
+  const el=document.getElementById("sb-sources");
+  el.innerHTML=Object.entries(srcCounts).sort((a,b)=>b[1]-a[1]).map(([src,cnt])=>`
+    <label class="sb-src-item">
+      <input type="checkbox" checked onchange="toggleSrc('${src}',this)"/>
+      <span class="sb-src-name">${esc(src)}</span>
+      <span class="sb-src-count">${cnt}</span>
+    </label>`).join("");
 }
 
-/* ──────────────────────────────────────────
-   Filtros
-   ────────────────────────────────────────── */
-function populateFilters(jobs) {
-  const companies = [...new Set(jobs.map(j => j.company))].sort();
-  const sel = document.getElementById('filter-company');
-  const current = sel.value;
-  sel.innerHTML = '<option value="">Todas as empresas</option>';
-  companies.forEach(c => {
-    const opt = document.createElement('option');
-    opt.value = c;
-    opt.textContent = c;
-    sel.appendChild(opt);
+function toggleSrc(src, cb){
+  if(cb.checked) activeSrcs.add(src); else activeSrcs.delete(src);
+  applyFilters();
+}
+
+/* ──────────────── COMPANY SELECT ───────────────────── */
+function populateCompSel(jobs){
+  const cos=[...new Set(jobs.map(j=>j.company))].sort();
+  const sel=document.getElementById("f-company");
+  const cur=sel.value;
+  sel.innerHTML='<option value="">Todas as empresas</option>';
+  cos.forEach(c=>{const o=document.createElement("option");o.value=o.textContent=c;sel.appendChild(o);});
+  sel.value=cur;
+}
+
+/* ──────────────── FILTERS ─────────────────────────── */
+function applyFilters(){
+  const q=document.getElementById("search").value.toLowerCase();
+  const co=document.getElementById("f-company").value;
+  const tp=document.getElementById("f-type").value;
+  filtered=allJobs.filter(j=>{
+    const mq=!q||j.title.toLowerCase().includes(q)||j.company.toLowerCase().includes(q);
+    const mc=!co||j.company===co;
+    const mt=!tp||j.type===tp;
+    const ms=activeSrcs.has(j.source);
+    const ma=!activeArea||j.area===activeArea;
+    return mq&&mc&&mt&&ms&&ma;
   });
-  sel.value = current;
+  renderJobs(filtered);
 }
 
-function applyFilters() {
-  const query   = document.getElementById('search').value.toLowerCase();
-  const company = document.getElementById('filter-company').value;
-  const type    = document.getElementById('filter-type').value;
-  const area    = document.getElementById('filter-area').value;
+/* ──────────────── RENDER ───────────────────────────── */
+function renderJobs(jobs){
+  const newC=jobs.filter(j=>j.is_new).length;
+  const cos=new Set(jobs.map(j=>j.company)).size;
+  const srcs=new Set(jobs.map(j=>j.source)).size;
+  document.getElementById("c-total").textContent=jobs.length;
+  document.getElementById("c-new").textContent=newC;
+  document.getElementById("c-co").textContent=cos;
+  document.getElementById("c-src").textContent=srcs;
 
-  filteredJobs = allJobs.filter(j => {
-    const matchQ = !query || j.title.toLowerCase().includes(query) || j.company.toLowerCase().includes(query);
-    const matchC = !company || j.company === company;
-    const matchT = !type    || j.type === type;
-    const matchA = !area    || (j.area || '').includes(area);
-    return matchQ && matchC && matchT && matchA;
-  });
-
-  renderJobs(filteredJobs);
-}
-
-/* ──────────────────────────────────────────
-   Renderização
-   ────────────────────────────────────────── */
-function renderJobs(jobs) {
-  const container = document.getElementById('jobs-list');
-  const newCount  = jobs.filter(j => j.is_new).length;
-  document.getElementById('job-count').textContent = jobs.length;
-  document.getElementById('new-count').textContent = newCount;
-
-  if (jobs.length === 0) {
-    container.innerHTML = `
-      <div class="board-message">
-        <div class="icon">🔎</div>
-        <p>Nenhuma vaga encontrada com esses filtros.<br/>Tente ampliar a busca.</p>
-      </div>`;
+  const el=document.getElementById("job-list");
+  if(!jobs.length){
+    el.innerHTML=`<div class="board-empty"><div class="icon">🔎</div><p>Nenhuma vaga encontrada com esses filtros.<br/>Tente ampliar a busca ou mudar a área.</p></div>`;
     return;
   }
-
-  container.innerHTML = jobs.map((j, i) => `
-    <div class="job-card${j.is_new ? ' is-new' : ''}" style="animation-delay:${i * 0.04}s">
-      <div class="job-company">
-        <div class="company-logo">${j.emoji || '🏢'}</div>
-        <div>
-          <div class="company-name">${esc(j.company)}</div>
-          <div class="company-src">${esc(j.source || 'Gupy')}</div>
+  el.innerHTML=jobs.map((j,i)=>`
+    <div class="job-card${j.is_new?" is-new":""}" style="animation-delay:${Math.min(i*.03,.4)}s">
+      <div class="jc-co">
+        <div class="jc-emo">${j.emoji||"🏢"}</div>
+        <div class="jc-co-txt">
+          <div class="jc-co-name">${esc(j.company)}</div>
+          <div class="jc-co-src">${esc(j.source)}</div>
         </div>
       </div>
-      <div>
-        <div class="job-title">${esc(j.title)}${j.is_new ? ' <span class="badge badge-new">NOVA</span>' : ''}</div>
-        <div class="job-location">📍 ${esc(j.location)}</div>
+      <div class="jc-body">
+        <div class="jc-title">${esc(j.title)}${j.is_new?'<span class="badge b-new">NOVA</span>':""}</div>
+        <div class="jc-meta">
+          <span class="jc-loc">📍 ${esc(j.location)}</span>
+          <span class="jc-area">${esc(j.area)}</span>
+        </div>
       </div>
-      <div>
-        <span class="badge badge-${j.type === 'CLT' ? 'clt' : j.type === 'PJ' ? 'pj' : j.type === 'Estágio' ? 'est' : 'tmp'}">
-          ${esc(j.type)}
-        </span>
+      <div class="jc-right">
+        <div class="jc-badges">
+          <span class="badge b-${j.type==="CLT"?"clt":j.type==="PJ"?"pj":j.type==="Estágio"?"est":"tmp"}">${esc(j.type)}</span>
+        </div>
+        <div class="jc-date">${fmtDate(j.date_posted)}</div>
+        <div class="jc-acts">
+          <button class="act" title="Ver vaga" onclick="window.open('${esc(j.url)}','_blank')">🔗</button>
+          <button class="act wpp" title="WhatsApp" onclick="shareJob(${i})">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51-.17-.01-.37-.01-.57-.01-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.06 2.87 1.21 3.07.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41z"/></svg>
+          </button>
+        </div>
       </div>
-      <div class="job-date">${formatDate(j.date_posted)}</div>
-      <div class="job-actions">
-        <a class="action-btn" href="${esc(j.url)}" target="_blank" rel="noopener" title="Ver vaga">🔗</a>
-        <button class="action-btn wpp" onclick="shareJobWpp(${i})" title="Compartilhar no WhatsApp">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
-        </button>
+    </div>`).join("");
+}
+
+function showLoading(){
+  document.getElementById("job-list").innerHTML=`<div class="board-empty"><div class="spinner"></div><p>Rastreando vagas em companhias aéreas de São Paulo…</p></div>`;
+  ["c-total","c-new","c-co","c-src"].forEach(id=>document.getElementById(id).textContent="—");
+}
+
+function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function fmtDate(s){if(!s)return"—";try{return new Date(s+"T00:00:00").toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit"})}catch{return s}}
+function setUpd(iso){if(!iso)return;try{document.getElementById("last-upd").textContent="Atualizado "+new Date(iso).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"})}catch{}}
+
+/* ──────────────── SHARE ───────────────────────────── */
+function shareJob(i){
+  const j=filtered[i];if(!j)return;
+  const m=`✈️ *Vaga — Logística Aérea SP*\n\n*${j.title}*\n🏢 ${j.company}\n📍 ${j.location} | 💼 ${j.type} | 📂 ${j.area}\n\n🔗 ${j.url}\n\n_RadarVagas_`;
+  window.open("https://wa.me/?text="+encodeURIComponent(m),"_blank");
+}
+function shareAll(){
+  const top=filtered.slice(0,5);if(!top.length)return;
+  const lines=top.map((j,i)=>`${i+1}. *${j.title}* — ${j.company}\n   📍 ${j.location} | 💼 ${j.type}\n   🔗 ${j.url}`).join("\n\n");
+  window.open("https://wa.me/?text="+encodeURIComponent(`✈️ *Vagas Logística Aérea SP*\n\n${lines}\n\n_RadarVagas_`),"_blank");
+}
+
+/* ──────────────── MODAL ───────────────────────────── */
+function openModal(){document.getElementById("modal").classList.add("open")}
+function closeModal(){document.getElementById("modal").classList.remove("open")}
+function saveAlert(){
+  const e=document.getElementById("al-email").value.trim();
+  const w=document.getElementById("al-wpp").value.trim();
+  if(!e&&!w){alert("Preencha ao menos o e-mail ou WhatsApp.");return;}
+  localStorage.setItem("rv_email",e);localStorage.setItem("rv_wpp",w);
+  closeModal();toast("✅ Preferências salvas! Configure os Secrets no GitHub Actions.");
+}
+document.getElementById("modal").addEventListener("click",e=>{if(e.target===document.getElementById("modal"))closeModal();});
+
+/* ──────────────── CV ──────────────────────────────── */
+function toggleCl(li){li.classList.toggle("done");updPbar();}
+function updPbar(){
+  const all=document.querySelectorAll("#cl .cl-item");
+  const done=document.querySelectorAll("#cl .cl-item.done").length;
+  const p=Math.round(done/all.length*100);
+  document.getElementById("pct").textContent=p+"%";
+  document.getElementById("pbar").style.width=p+"%";
+}
+function cpKw(el){
+  navigator.clipboard.writeText(el.textContent.trim()).then(()=>toast("📋 Copiado: "+el.textContent.trim()));
+}
+function cpObj(){
+  const t=document.getElementById("obj-box").innerText.replace("📋 Copiar","").trim();
+  navigator.clipboard.writeText(t).then(()=>toast("📋 Objetivo copiado!"));
+}
+
+/* ──────────────── TOAST ───────────────────────────── */
+function toast(msg){
+  const el=document.getElementById("toast");
+  el.textContent=msg;el.classList.add("show");
+  setTimeout(()=>el.classList.remove("show"),2600);
+}
+
+/* ──────────────── COMPANIES ────────────────────────── */
+function renderCompanies(){
+  document.getElementById("emp-grid").innerHTML=COMPANIES.map(c=>`
+    <div class="emp-card">
+      <div class="emp-top">
+        <span class="emp-emo">${c.emoji}</span>
+        <div>
+          <div class="emp-name">${esc(c.name)}</div>
+          <div class="emp-cat">${esc(c.cat)}</div>
+        </div>
       </div>
-    </div>
-  `).join('');
+      <div class="emp-desc">${esc(c.desc)}</div>
+      <div class="emp-links">
+        ${c.links.map(l=>`<a class="emp-link${l.h?" hi":""}" href="${esc(l.u)}" target="_blank" rel="noopener">${esc(l.l)} ↗</a>`).join("")}
+      </div>
+    </div>`).join("");
 }
 
-function showLoading() {
-  document.getElementById('jobs-list').innerHTML = `
-    <div class="board-message">
-      <div class="spinner"></div>
-      <p>Rastreando vagas em companhias aéreas…</p>
-    </div>`;
-  document.getElementById('job-count').textContent = '—';
-  document.getElementById('new-count').textContent = '—';
-}
-
-function esc(str) {
-  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-function formatDate(dateStr) {
-  if (!dateStr) return '—';
-  try {
-    const d = new Date(dateStr + 'T00:00:00');
-    return d.toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit' });
-  } catch { return dateStr; }
-}
-
-function setLastUpdated(isoStr) {
-  if (!isoStr) return;
-  try {
-    const d = new Date(isoStr);
-    document.getElementById('last-updated').textContent =
-      'Atualizado ' + d.toLocaleString('pt-BR', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' });
-  } catch {}
-}
-
-/* ──────────────────────────────────────────
-   Compartilhamento
-   ────────────────────────────────────────── */
-function shareJobWpp(index) {
-  const j = filteredJobs[index];
-  if (!j) return;
-  const msg = `✈️ *Vaga de Logística Aérea — SP*\n\n*${j.title}*\n🏢 ${j.company}\n📍 ${j.location}\n💼 ${j.type}\n\n🔗 ${j.url}\n\n_Via Radar de Vagas_`;
-  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
-}
-
-function shareAll() {
-  const top5 = filteredJobs.slice(0, 5);
-  if (top5.length === 0) { alert('Nenhuma vaga para compartilhar.'); return; }
-  const lines = top5.map((j, i) => `${i+1}. *${j.title}* — ${j.company}\n   📍 ${j.location} | 💼 ${j.type}\n   🔗 ${j.url}`).join('\n\n');
-  const msg = `✈️ *Vagas de Logística Aérea — SP*\n\n${lines}\n\n_Radar de Vagas_`;
-  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
-}
-
-/* ──────────────────────────────────────────
-   Modal de alerta
-   ────────────────────────────────────────── */
-function openAlertModal()  { document.getElementById('alert-modal').classList.add('open'); }
-function closeAlertModal() { document.getElementById('alert-modal').classList.remove('open'); }
-
-function saveAlert() {
-  const email = document.getElementById('alert-email').value.trim();
-  const wpp   = document.getElementById('alert-wpp').value.trim();
-  if (!email && !wpp) { alert('Preencha ao menos o e-mail ou o WhatsApp.'); return; }
-  // Salva localmente para referência (configuração real é via env vars no Actions)
-  localStorage.setItem('alert_email', email);
-  localStorage.setItem('alert_wpp', wpp);
-  closeAlertModal();
-  alert('✅ Preferências salvas!\n\nPara receber alertas automáticos, configure ALERT_EMAIL e ALERT_WPP nas variáveis do GitHub Actions (veja o README.md).');
-}
-
-// Fecha modal ao clicar fora
-document.getElementById('alert-modal').addEventListener('click', function(e) {
-  if (e.target === this) closeAlertModal();
-});
-
-/* ──────────────────────────────────────────
-   Init
-   ────────────────────────────────────────── */
+/* ──────────────── INIT ─────────────────────────────── */
+renderCompanies();
 loadJobs();
 </script>
 </body>
