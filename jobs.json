@@ -1,10 +1,10 @@
 {
-  "updated_at": "2026-06-25T12:22:49.467642+00:00",
-  "total": 122,
-  "new_count": 122,
+  "updated_at": "2026-06-25T17:12:41.255028+00:00",
+  "total": 92,
+  "new_count": 92,
   "jobs": [
     {
-      "id": "vagas_1152077206097275794",
+      "id": "vagas_2530543940880625754",
       "title": "Supervisor deGestãode Pedidos",
       "company": "Allied",
       "emoji": "🏢",
@@ -17,7 +17,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_954287541346450134",
+      "id": "vagas_-5843007774785161816",
       "title": "AssistenteAdministrativo",
       "company": "Associação Nova Esperança (AFNE)",
       "emoji": "🏢",
@@ -30,7 +30,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-4687859717771352006",
+      "id": "vagas_-2323877346056640727",
       "title": "AssistenteAdministrativo",
       "company": "Ativa Investimentos",
       "emoji": "🏢",
@@ -43,7 +43,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-5205221685178453105",
+      "id": "vagas_-8864584406861656714",
       "title": "Assistente deProdução",
       "company": "Aventura",
       "emoji": "🏢",
@@ -56,7 +56,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-6430556066857413803",
+      "id": "vagas_-8071066611637453447",
       "title": "CoordenadorProduçãoOperacional",
       "company": "Aventura Teatros",
       "emoji": "🏢",
@@ -69,20 +69,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-6465322629160885394",
-      "title": "Coordenador(a)AdministrativodeLogística",
-      "company": "BR Talent",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2816177/coordenador-a-administrativo-de-logistica",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_1663528883652223076",
+      "id": "vagas_2636795158261410662",
       "title": "AssistenteAdministrativo",
       "company": "Beckman Coulter Diagnostics",
       "emoji": "🏢",
@@ -95,20 +82,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-6040842133264327001",
-      "title": "GerenteOperacional | Lapa/SP",
-      "company": "Beleza Natural",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2820550/gerente-operacional-lapa-sp",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_-4330395916714174774",
+      "id": "vagas_-4324353135037137648",
       "title": "CompradorPl",
       "company": "Blau Farmacêutica",
       "emoji": "🏢",
@@ -121,7 +95,20 @@
       "is_new": true
     },
     {
-      "id": "vagas_7146024299692287059",
+      "id": "vagas_5461843837330257376",
+      "title": "Analistade RH",
+      "company": "Cavalcante Ramos Advogados",
+      "emoji": "🏢",
+      "location": "São Paulo, SP",
+      "type": "CLT",
+      "area": "Logística",
+      "date_posted": "2026-06-25",
+      "url": "https://www.vagas.com.br/vagas/v2818122/analista-de-rh",
+      "source": "Vagas.com",
+      "is_new": true
+    },
+    {
+      "id": "vagas_1396079969047873699",
       "title": "Auxiliar deProdução",
       "company": "Colgate-Palmolive",
       "emoji": "🏢",
@@ -134,7 +121,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-1961527404789416525",
+      "id": "vagas_-57280046195201583",
       "title": "Gerentede Desembaraço Aduaneiro",
       "company": "Confidencial",
       "emoji": "🏢",
@@ -147,59 +134,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-8195097284930271778",
-      "title": "AnalistaAdministrativoComercial -SãoPaulo/SP",
-      "company": "Confidencial",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2816965/analista-administrativo-comercial-sao-paulo-sp",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_-3654102900139249633",
-      "title": "Key Account (Especialista) - Kosher -SãoPaulo/SP",
-      "company": "Confidencial",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2820481/key-account-especialista-kosher-sao-paulo-sp",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_5678049128324293087",
-      "title": "AnalistaAdministrativoPleno (Dental) - Morumbi,SP",
-      "company": "Confidencial",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2819005/analista-administrativo-pleno-dental-morumbi-sp",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_-1833743633037968397",
-      "title": "DiretorLogística",
-      "company": "Confidencial",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2822378/diretor-logistica",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_7749455594315071360",
+      "id": "vagas_7889146840895841860",
       "title": "Supervisor deProdução",
       "company": "Confidencial",
       "emoji": "🏢",
@@ -212,7 +147,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-1784853303374334651",
+      "id": "vagas_4717733341820845923",
       "title": "Alimentador de Linha deProdução",
       "company": "Confidencial",
       "emoji": "🏢",
@@ -225,7 +160,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-4990136074717511321",
+      "id": "vagas_5298628615021618712",
       "title": "Alimentador(a) de Linha deProdução- 112869",
       "company": "Confidencial",
       "emoji": "🏢",
@@ -238,7 +173,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_7304861693792843648",
+      "id": "vagas_-4680181314957570556",
       "title": "Produçãode Conteúdo e Design",
       "company": "Confidencial",
       "emoji": "🏢",
@@ -251,7 +186,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_8579594763117438649",
+      "id": "vagas_-7502262650730737521",
       "title": "AssistenteAdministrativo",
       "company": "Confidencial",
       "emoji": "🏢",
@@ -264,7 +199,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_9196601421255258763",
+      "id": "vagas_-2320630400457836410",
       "title": "GerenteCrédito",
       "company": "Confidencial",
       "emoji": "🏢",
@@ -277,7 +212,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-5899669527715102839",
+      "id": "vagas_-8093121923997029362",
       "title": "AssistenteAdministrativo(a) - 112119",
       "company": "Confidencial",
       "emoji": "🏢",
@@ -290,7 +225,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_1828557450481955812",
+      "id": "vagas_-3709218799547336649",
       "title": "AnalistaAdministrativo(a) - 112181",
       "company": "Confidencial",
       "emoji": "🏢",
@@ -303,7 +238,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_2492789835102007360",
+      "id": "vagas_4177308750951178253",
       "title": "Comprador(a) Técnico(a)",
       "company": "Confidencial",
       "emoji": "🏢",
@@ -316,20 +251,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-1066471686602666374",
-      "title": "CompradorTécnico",
-      "company": "Confidencial",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2818646/comprador-tecnico",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_6474469117935916751",
+      "id": "vagas_-8348187955755782880",
       "title": "AuxiliarAdministrativoJr. - 112490",
       "company": "Confidencial",
       "emoji": "🏢",
@@ -342,7 +264,20 @@
       "is_new": true
     },
     {
-      "id": "vagas_-5517191505875110654",
+      "id": "vagas_-4010725246875678630",
+      "title": "CompradorTécnico",
+      "company": "Confidencial",
+      "emoji": "🏢",
+      "location": "São Paulo, SP",
+      "type": "CLT",
+      "area": "Logística",
+      "date_posted": "2026-06-25",
+      "url": "https://www.vagas.com.br/vagas/v2818646/comprador-tecnico",
+      "source": "Vagas.com",
+      "is_new": true
+    },
+    {
+      "id": "vagas_1509244962975663370",
       "title": "GerenteContábil",
       "company": "Confidencial",
       "emoji": "🏢",
@@ -355,7 +290,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-5746412365218366414",
+      "id": "vagas_-7885312920059340907",
       "title": "GerentePricing",
       "company": "Confidencial",
       "emoji": "🏢",
@@ -368,7 +303,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-7473736703974423712",
+      "id": "vagas_-3579591577515486642",
       "title": "Jovem AprendizAdministrativo",
       "company": "Confidencial",
       "emoji": "🏢",
@@ -381,7 +316,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_6415870698089490649",
+      "id": "vagas_5989258258323473263",
       "title": "Jovem AprendizAdministrativo",
       "company": "Confidencial",
       "emoji": "🏢",
@@ -394,7 +329,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_5604322005580846518",
+      "id": "vagas_-8352911421624281808",
       "title": "AnalistaAdministrativo(a) - Facilities - 111784",
       "company": "Confidencial",
       "emoji": "🏢",
@@ -407,7 +342,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-1111360162173455478",
+      "id": "vagas_-5870333088635161541",
       "title": "Assistente deAdministraçãode Pessoal",
       "company": "Confidencial",
       "emoji": "🏢",
@@ -420,20 +355,20 @@
       "is_new": true
     },
     {
-      "id": "vagas_-4841844757730849698",
-      "title": "COORDENADOR(a) deAdministraçãode Pessoal",
-      "company": "Confidencial",
+      "id": "vagas_-5558612345394001951",
+      "title": "AnalistaValidação Sistemas Sr",
+      "company": "DFL Indústria e Comércio S/A",
       "emoji": "🏢",
       "location": "São Paulo, SP",
       "type": "CLT",
       "area": "Logística",
       "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2818899/coordenador-a-de-administracao-de-pessoal",
+      "url": "https://www.vagas.com.br/vagas/v2818760/analista-validacao-sistemas-sr",
       "source": "Vagas.com",
       "is_new": true
     },
     {
-      "id": "vagas_3145276366408173839",
+      "id": "vagas_-6083084143730711661",
       "title": "GerenteComercial (Logistics)",
       "company": "DP World Logistics",
       "emoji": "🏢",
@@ -446,7 +381,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-2915038710053430178",
+      "id": "vagas_6890834262905357921",
       "title": "Jovem AprendizAdministrativo",
       "company": "EDITORA GLOBO",
       "emoji": "🏢",
@@ -459,20 +394,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-8389838338073357",
-      "title": "Pcd - AuxiliarAdministrativo-SãoPaulo",
-      "company": "Einstein Hospital Israelita",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2818372/pcd-auxiliar-administrativo-sao-paulo",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_-976667081671476119",
+      "id": "vagas_5255144918472477811",
       "title": "AuxiliarLogística- Morumbi | para Pessoas com Deficiência (Pcd)",
       "company": "Einstein Hospital Israelita",
       "emoji": "🏢",
@@ -485,7 +407,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_424258924562806363",
+      "id": "vagas_-2033265581355974557",
       "title": "Analista Suporte Pl (DBA)",
       "company": "Einstein Hospital Israelita",
       "emoji": "🏢",
@@ -498,7 +420,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-5940133305371560092",
+      "id": "vagas_-8574139338748579749",
       "title": "AuxiliarAdministrativo",
       "company": "EmpregaSaúde",
       "emoji": "🏢",
@@ -511,7 +433,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-2684097658761289616",
+      "id": "vagas_-8469791890468450461",
       "title": "AnalistaAdministrativoFinanceiro",
       "company": "EmpregaSaúde",
       "emoji": "🏢",
@@ -524,20 +446,20 @@
       "is_new": true
     },
     {
-      "id": "vagas_-4105092904208706480",
-      "title": "Analista deLogísticaem Eventos",
-      "company": "FFM",
+      "id": "vagas_-6316284242357291081",
+      "title": "Engenheiro deSuprimentos",
+      "company": "FBS Construtora",
       "emoji": "🏢",
       "location": "São Paulo, SP",
       "type": "CLT",
       "area": "Logística",
       "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2819362/analista-de-logistica-em-eventos",
+      "url": "https://www.vagas.com.br/vagas/v2819583/engenheiro-de-suprimentos",
       "source": "Vagas.com",
       "is_new": true
     },
     {
-      "id": "vagas_414127848999949609",
+      "id": "vagas_5105572814749090763",
       "title": "Médico Anestesiologia - ICESP",
       "company": "FFM",
       "emoji": "🏢",
@@ -550,33 +472,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_7958318303327499458",
-      "title": "Assistente deLogística",
-      "company": "FTD Educação",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2820811/assistente-de-logistica",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_8772144653453309636",
-      "title": "Assistente Comercial -LogísticaInternacional",
-      "company": "Fiorde Group",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2817423/assistente-comercial-logistica-internacional",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_6749626628756194597",
+      "id": "vagas_1546803511344674885",
       "title": "Médico (Intensivista)",
       "company": "Fundação Faculdade de Medicina",
       "emoji": "🏢",
@@ -589,7 +485,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_462070188434489104",
+      "id": "vagas_-4862471845246491288",
       "title": "AssistenteAdministrativo",
       "company": "GO-LOCK Seguros",
       "emoji": "🏢",
@@ -602,7 +498,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_4554810161707460147",
+      "id": "vagas_-2309551019958721086",
       "title": "Auxiliar deSuprimentos",
       "company": "GRAACC",
       "emoji": "🏢",
@@ -615,7 +511,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_5343393600005225792",
+      "id": "vagas_-9201549446942929861",
       "title": "Analista deSuprimentosPleno |Compras",
       "company": "GWM",
       "emoji": "🏢",
@@ -628,7 +524,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_3023436634928978692",
+      "id": "vagas_3800536043861438256",
       "title": "Assistente de Monitoramento (Logística) - Afirmativa para Pessoas com Deficiência",
       "company": "Grupo Bimbo",
       "emoji": "🏢",
@@ -641,33 +537,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-1149842218383871865",
-      "title": "Analista deLogísticade Transporte Pleno",
-      "company": "Grupo Dislub Equador",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2807559/analista-de-logistica-de-transporte-pleno",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_-8553270762818486816",
-      "title": "Analista de Roteirização - Atendimento Móvel - A+sp",
-      "company": "Grupo Fleury",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2819104/analista-de-roteirizacao-atendimento-movel-a-sp",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_-4611555138875360395",
+      "id": "vagas_-3267923949239033264",
       "title": "Auxiliar deProdução- Área de Saúde",
       "company": "Grupo Fleury",
       "emoji": "🏢",
@@ -680,7 +550,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-644121051984125025",
+      "id": "vagas_-3885078444305431161",
       "title": "Analista de Laboratório I –Produçãoe Desenvolvimento de Meios e Reativos",
       "company": "Grupo Fleury",
       "emoji": "🏢",
@@ -693,7 +563,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_7331642750435494005",
+      "id": "vagas_6595829090155535199",
       "title": "AuxiliarAdministrativoII",
       "company": "Grupo Fleury",
       "emoji": "🏢",
@@ -706,7 +576,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-3156957603394827612",
+      "id": "vagas_4497653813122849842",
       "title": "Programa de Estágio 2026 - Núcleo Farmas - Novos Elos - Engenharia deProdução",
       "company": "Grupo Fleury",
       "emoji": "🏢",
@@ -719,7 +589,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-2400645926745231649",
+      "id": "vagas_-2556856877201441044",
       "title": "Programa de Estágio 2026 -GestãoImobiliária -Administração- Ciências Contábeis",
       "company": "Grupo Fleury",
       "emoji": "🏢",
@@ -732,46 +602,46 @@
       "is_new": true
     },
     {
-      "id": "vagas_4138697851903934150",
-      "title": "Auxiliar deLogística",
-      "company": "Grupo JCA",
+      "id": "vagas_-7647893975518918820",
+      "title": "Analistade Desenvolvimento de Produto Pleno",
+      "company": "Grupo Profarma",
       "emoji": "🏢",
       "location": "São Paulo, SP",
       "type": "CLT",
       "area": "Logística",
       "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2813890/auxiliar-de-logistica",
+      "url": "https://www.vagas.com.br/vagas/v2820090/analista-de-desenvolvimento-de-produto-pleno",
       "source": "Vagas.com",
       "is_new": true
     },
     {
-      "id": "vagas_-3696459153548561631",
-      "title": "Auxiliar deLogísticaPerus /SP",
+      "id": "vagas_6208575851799387525",
+      "title": "Analistade Desenvolvimento em RH",
       "company": "Grupo SERES",
       "emoji": "🏢",
       "location": "São Paulo, SP",
       "type": "CLT",
       "area": "Logística",
       "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2820306/auxiliar-de-logistica-perus-sp",
+      "url": "https://www.vagas.com.br/vagas/v2805596/analista-de-desenvolvimento-em-rh",
       "source": "Vagas.com",
       "is_new": true
     },
     {
-      "id": "vagas_2219016818372552198",
-      "title": "Auxiliar deLogística",
+      "id": "vagas_3625678058158865662",
+      "title": "Analistade Planejamento e Controle de Manutenção Jr",
       "company": "Grupo SERES",
       "emoji": "🏢",
       "location": "São Paulo, SP",
       "type": "CLT",
       "area": "Logística",
       "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2808945/auxiliar-de-logistica",
+      "url": "https://www.vagas.com.br/vagas/v2804546/analista-de-planejamento-e-controle-de-manutencao-jr",
       "source": "Vagas.com",
       "is_new": true
     },
     {
-      "id": "vagas_-8464995369790555333",
+      "id": "vagas_-752707997709812999",
       "title": "AnalistaAdministrativode Vendas",
       "company": "HarperCollins Brasil",
       "emoji": "🏢",
@@ -784,7 +654,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-416566606516949543",
+      "id": "vagas_-8789469392594937994",
       "title": "Auxiliar de Escritório - Faturamento",
       "company": "HospitalSãoCamilo",
       "emoji": "🏢",
@@ -797,7 +667,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-1876140803738513609",
+      "id": "vagas_4481052574633323744",
       "title": "AuxiliarAdministrativoPcd",
       "company": "HospitalSãoCamilo",
       "emoji": "🏢",
@@ -810,7 +680,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_2263936274567930732",
+      "id": "vagas_-2258656517386934602",
       "title": "Auxiliar de Escritório - Farmácia Hospitalar",
       "company": "HospitalSãoCamilo",
       "emoji": "🏢",
@@ -823,7 +693,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_7558864396794855100",
+      "id": "vagas_-1823898088764223690",
       "title": "Analista de Sistemas Jr (Tasy - Módulos Farmácia/Suprimentos)",
       "company": "HospitalSãoCamilo",
       "emoji": "🏢",
@@ -836,7 +706,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-4829730293178228087",
+      "id": "vagas_-3239352030102059081",
       "title": "RecepçãoAdministrativo",
       "company": "Inspirali",
       "emoji": "🏢",
@@ -849,20 +719,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_91396469499579245",
-      "title": "Estagiário(a) de Recursos Humanos -SãoPaulo/SP",
-      "company": "InterCement Brasil S.A",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2821791/estagiario-a-de-recursos-humanos-sao-paulo-sp",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_-5128844229202769887",
+      "id": "vagas_1420903830087105404",
       "title": "Especialista Agenciamento de Carga Bilíngue (Português – Chinês)",
       "company": "J&T Express",
       "emoji": "🏢",
@@ -875,7 +732,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_1452099627611192540",
+      "id": "vagas_9123316838417494632",
       "title": "CompradorSr.",
       "company": "JOBCENTER DO BRASIL LTDA",
       "emoji": "🏢",
@@ -888,7 +745,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-797467011004225467",
+      "id": "vagas_5549735572382618682",
       "title": "AssistenteAdministrativoPleno",
       "company": "JOBCENTER DO BRASIL LTDA",
       "emoji": "🏢",
@@ -901,7 +758,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-8549538862504264571",
+      "id": "vagas_4677230528833914119",
       "title": "RecepcionistaAdministrativo",
       "company": "JOBCENTER DO BRASIL LTDA",
       "emoji": "🏢",
@@ -914,7 +771,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_1741534042766215994",
+      "id": "vagas_-7858399033405220237",
       "title": "Analista deSuprimentosPleno",
       "company": "JOBCENTER DO BRASIL LTDA",
       "emoji": "🏢",
@@ -927,7 +784,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-3571499451727581437",
+      "id": "vagas_-3201222536975367256",
       "title": "Analista deSuprimentos",
       "company": "JOBCENTER DO BRASIL LTDA",
       "emoji": "🏢",
@@ -940,7 +797,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_7077201065622327187",
+      "id": "vagas_756740065841948170",
       "title": "AssistenteAdministrativo",
       "company": "Manager Gestão Condominial",
       "emoji": "🏢",
@@ -953,7 +810,20 @@
       "is_new": true
     },
     {
-      "id": "vagas_6469538136902270120",
+      "id": "vagas_-7568177537466316746",
+      "title": "AuxiliarAdministrativo(Cobrança)",
+      "company": "Manager Gestão Condominial",
+      "emoji": "🏢",
+      "location": "São Paulo, SP",
+      "type": "CLT",
+      "area": "Logística",
+      "date_posted": "2026-06-25",
+      "url": "https://www.vagas.com.br/vagas/v2822530/auxiliar-administrativo-cobranca",
+      "source": "Vagas.com",
+      "is_new": true
+    },
+    {
+      "id": "vagas_4761409739056376856",
       "title": "AnalistaAdministrativo(Manutenção)",
       "company": "Manager Gestão Condominial",
       "emoji": "🏢",
@@ -966,7 +836,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-5258400437982655359",
+      "id": "vagas_1424267642158161207",
       "title": "Analista de Agenciamento deCargas",
       "company": "Manpowergroup",
       "emoji": "🏢",
@@ -979,7 +849,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_6592165051009402455",
+      "id": "vagas_-2324190076150259564",
       "title": "Operador deProduçãoI",
       "company": "Marjan Farma",
       "emoji": "🏢",
@@ -992,7 +862,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-7159254182465214171",
+      "id": "vagas_-2818855216443028798",
       "title": "CompradorSr",
       "company": "Marjan Farma",
       "emoji": "🏢",
@@ -1005,7 +875,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-1027211207500875417",
+      "id": "vagas_-55673029373930183",
       "title": "Jovem Aprendiz -Administrativo",
       "company": "MetLife",
       "emoji": "🏢",
@@ -1018,7 +888,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-2489335236196863937",
+      "id": "vagas_179818301779898490",
       "title": "AssistenteAdministrativo",
       "company": "Montana Química Ltda",
       "emoji": "🏢",
@@ -1031,7 +901,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-1152619513919484886",
+      "id": "vagas_-3034991968397332155",
       "title": "Coordenador(a) de PósProdução",
       "company": "Omelete Company",
       "emoji": "🏢",
@@ -1044,7 +914,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_7133380098554699207",
+      "id": "vagas_5559725616355460340",
       "title": "AssistenteAdministrativo",
       "company": "Oncoclínicas&Co",
       "emoji": "🏢",
@@ -1057,7 +927,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-1185675615054962140",
+      "id": "vagas_8367418344354391085",
       "title": "Supervisor(a)Administrativo(a)",
       "company": "Oncoclínicas&Co",
       "emoji": "🏢",
@@ -1070,7 +940,20 @@
       "is_new": true
     },
     {
-      "id": "vagas_4482260105552068166",
+      "id": "vagas_5459091556731910662",
+      "title": "Gerentede Segmentos I",
+      "company": "PAMCARY",
+      "emoji": "🏢",
+      "location": "São Paulo, SP",
+      "type": "CLT",
+      "area": "Logística",
+      "date_posted": "2026-06-25",
+      "url": "https://www.vagas.com.br/vagas/v2820693/gerente-de-segmentos-i",
+      "source": "Vagas.com",
+      "is_new": true
+    },
+    {
+      "id": "vagas_-5747966041996874548",
       "title": "AnalistaAdministrativoJúnior",
       "company": "Penso Tecnologia",
       "emoji": "🏢",
@@ -1083,7 +966,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_4390356523431097250",
+      "id": "vagas_-5191817568869764786",
       "title": "Gerente- Moda Masculina",
       "company": "Personale Consultoria de RH",
       "emoji": "🏢",
@@ -1096,20 +979,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_1970897766543719317",
-      "title": "Auxiliar deLogísticaI",
-      "company": "Proativa RH",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2818937/auxiliar-de-logistica-i",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_-4062994230384573391",
+      "id": "vagas_8025478546735846966",
       "title": "Coordenador deProdução",
       "company": "Proativa RH",
       "emoji": "🏢",
@@ -1122,33 +992,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_1000028666334822282",
-      "title": "Auxiliar deLogística",
-      "company": "Randstad Brasil",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2817470/auxiliar-de-logistica",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_1286277852977031348",
-      "title": "Auxiliar deLogística",
-      "company": "Randstad Brasil",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2818140/auxiliar-de-logistica",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_64648985711596530",
+      "id": "vagas_671274050326106247",
       "title": "Rep I - Auxiliar deLogística- Mercado Livre",
       "company": "Randstad Brasil",
       "emoji": "🏢",
@@ -1161,33 +1005,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_5074360686783909099",
-      "title": "Assistente deLogística",
-      "company": "Razac",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2818377/assistente-de-logistica",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_-8942718509087863711",
-      "title": "TécnicoLogistico| Reckitt Industrial",
-      "company": "Reckitt",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2819687/tecnico-logistico-reckitt-industrial",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_-7341624088275213786",
+      "id": "vagas_4194001165578459563",
       "title": "Auxiliar deProdução| Reckitt Industrial",
       "company": "Reckitt",
       "emoji": "🏢",
@@ -1200,202 +1018,33 @@
       "is_new": true
     },
     {
-      "id": "vagas_1508231144903459615",
-      "title": "NutricionistaProdução-Rede DorSãoLuiz",
+      "id": "vagas_7529779913215412309",
+      "title": "AnalistaSr - Engenharia e Manutenção - Corporativo RJ",
       "company": "Rede D'Or",
       "emoji": "🏢",
       "location": "São Paulo, SP",
       "type": "CLT",
       "area": "Logística",
       "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2820028/nutricionista-producao-rede-dor-sao-luiz",
+      "url": "https://www.vagas.com.br/vagas/v2808464/analista-sr-engenharia-e-manutencao-corporativo-rj",
       "source": "Vagas.com",
       "is_new": true
     },
     {
-      "id": "vagas_5069674483043719850",
-      "title": "Auxiliar de Governança -GestãoGovernança - HospitalSãoLuiz Morumbi",
+      "id": "vagas_3483095090496767573",
+      "title": "AnalistaFinanceiro Pl - Pesquisa - IDOR RJ",
       "company": "Rede D'Or",
       "emoji": "🏢",
       "location": "São Paulo, SP",
       "type": "CLT",
       "area": "Logística",
       "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2815673/auxiliar-de-governanca-gestao-governanca-hospital-sao-luiz-morumbi",
+      "url": "https://www.vagas.com.br/vagas/v2812356/analista-financeiro-pl-pesquisa-idor-rj",
       "source": "Vagas.com",
       "is_new": true
     },
     {
-      "id": "vagas_-1377724277504672390",
-      "title": "AuxiliarAdministrativo- OPME Ciclo Receita -SãoLuiz Morumbi",
-      "company": "Rede D'Or",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2818237/auxiliar-administrativo-opme-ciclo-receita-sao-luiz-morumbi",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_4191237751350544564",
-      "title": "Auxiliar deSuprimentosSetor Almoxarifado - UnidadeSãoLuiz Morumbi",
-      "company": "Rede D'Or",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2814132/auxiliar-de-suprimentos-setor-almoxarifado-unidade-sao-luiz-morumbi",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_-654882291995081239",
-      "title": "Auxiliar deSuprimentosSetor Almoxarifado - UnidadeSãoLuiz Jabaquara",
-      "company": "Rede D'Or",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2813240/auxiliar-de-suprimentos-setor-almoxarifado-unidade-sao-luiz-jabaquara",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_-6677771767989904210",
-      "title": "AuxiliarAdministrativoPcd | Jovem Aprendiz - HospitalSãoLuiz Morumbi",
-      "company": "Rede D'Or",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2806042/auxiliar-administrativo-pcd-jovem-aprendiz-hospital-sao-luiz-morumbi",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_-2420437330497298963",
-      "title": "Rede D'or - AuxiliarAdministrativo- Central de Relacionamento Médico -SãoCaetano",
-      "company": "Rede D'Or",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2818648/rede-d-or-auxiliar-administrativo-central-de-relacionamento-medico-sao-caetano",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_6948490023768960417",
-      "title": "AuxiliarAdministrativo- UNI Adulto - Outros - / OPME Ciclo Receita - HospitalSãoLuiz Morumbi",
-      "company": "Rede D'Or",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2800696/auxiliar-administrativo-uni-adulto-outros-opme-ciclo-receita-hospital-sao-luiz-morumbi",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_8251167037440495762",
-      "title": "AssistenteAdministrativo- Recurso de Glosas - CorporativoSP",
-      "company": "Rede D'Or",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2813896/assistente-administrativo-recurso-de-glosas-corporativo-sp",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_-2548935524023182245",
-      "title": "AssistenteAdministrativo- Coleta DomiciliarSP- Hospital Itaim",
-      "company": "Rede D'Or",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2820869/assistente-administrativo-coleta-domiciliar-sp-hospital-itaim",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_-4908063033958574219",
-      "title": "AuxiliarAdministrativo- Atendimento Telefonico - Zona SulSP",
-      "company": "Rede D'Or",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2818304/auxiliar-administrativo-atendimento-telefonico-zona-sul-sp",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_-5861931703118274693",
-      "title": "Analista de Informações Gerenciais Sr -Gestãode Honorários Médicos - CorporativoSP",
-      "company": "Rede D'Or",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2820427/analista-de-informacoes-gerenciais-sr-gestao-de-honorarios-medicos-corporativo-sp",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_5187685671966004275",
-      "title": "Analista Pl -Gestãode Projetos - Honorários Médicos - Repasses Médicos - CorporativoSP",
-      "company": "Rede D'Or",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2811674/analista-pl-gestao-de-projetos-honorarios-medicos-repasses-medicos-corporativo-sp",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_-5395279237296462085",
-      "title": "An Cont Medicas -Gestãode Projetos - Honorários Médicos - Repasses Médicos - CorporativoSP",
-      "company": "Rede D'Or",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2811665/an-cont-medicas-gestao-de-projetos-honorarios-medicos-repasses-medicos-corporativo-sp",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_-8174497884278161017",
-      "title": "Analista Contas Medicas -Gestãode Projetos - Honorários Médicos - Repasses Médicos - CorporativoSP",
-      "company": "Rede D'Or",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2811670/analista-contas-medicas-gestao-de-projetos-honorarios-medicos-repasses-medicos-corporativo-sp",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_7134790754949564177",
+      "id": "vagas_-5095378012019201287",
       "title": "AuxiliarAdministrativo| Unidades Região Sul e Oeste deSP",
       "company": "Rede D'Or",
       "emoji": "🏢",
@@ -1408,7 +1057,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-4284938081954250358",
+      "id": "vagas_7931358678084189093",
       "title": "Gerentede Licitação",
       "company": "Supermed",
       "emoji": "🏢",
@@ -1421,7 +1070,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_8773960935467823250",
+      "id": "vagas_1675014494969084990",
       "title": "Gerentede Contas",
       "company": "Synchro",
       "emoji": "🏢",
@@ -1434,20 +1083,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-4511290249648335137",
-      "title": "SP- Agente de Atendimento -ComprasOnline - Lapa",
-      "company": "TP",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2807385/sp-agente-de-atendimento-compras-online-lapa",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_7462585198299304484",
+      "id": "vagas_6564384096375495477",
       "title": "11263 -Gerentede Projetos",
       "company": "Talent Group",
       "emoji": "🏢",
@@ -1460,7 +1096,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-2041350990241210710",
+      "id": "vagas_-7465465727803256855",
       "title": "11271 -Gerentede Projetos",
       "company": "Talent Group",
       "emoji": "🏢",
@@ -1473,7 +1109,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_2708635495848467991",
+      "id": "vagas_4940802943119181724",
       "title": "11282 - Auxiliar de Engenharia/Suprimentos",
       "company": "Talent Group",
       "emoji": "🏢",
@@ -1486,7 +1122,20 @@
       "is_new": true
     },
     {
-      "id": "vagas_90656970909556925",
+      "id": "vagas_-6008193561360624565",
+      "title": "11212 -Gerentede Projetos de TI (Pleno)",
+      "company": "Talent Group",
+      "emoji": "🏢",
+      "location": "São Paulo, SP",
+      "type": "CLT",
+      "area": "Logística",
+      "date_posted": "2026-06-25",
+      "url": "https://www.vagas.com.br/vagas/v2808006/11212-gerente-de-projetos-de-ti-pleno",
+      "source": "Vagas.com",
+      "is_new": true
+    },
+    {
+      "id": "vagas_4342292279590207207",
       "title": "SupervisorAdministrativo",
       "company": "The Adecco Group",
       "emoji": "🏢",
@@ -1499,7 +1148,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-2987169510628687862",
+      "id": "vagas_2099682811939786044",
       "title": "CompradorSr. (Insumos Farmacêuticos)",
       "company": "União Química Farmacêutica Nacional S/A",
       "emoji": "🏢",
@@ -1512,20 +1161,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_-5263175013031193897",
-      "title": "GerenteDistrital - Genom",
-      "company": "União Química Farmacêutica Nacional S/A",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2820993/gerente-distrital-genom",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_5369930151568446427",
+      "id": "vagas_1725125431039604493",
       "title": "Gerentede Novos Negócios",
       "company": "União Química Farmacêutica Nacional S/A",
       "emoji": "🏢",
@@ -1538,33 +1174,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_3615885987428188651",
-      "title": "Jovem Aprendiz emLogística",
-      "company": "Veolia | Water Tech",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2803689/jovem-aprendiz-em-logistica",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_3914430755900863086",
-      "title": "Jovem Aprendiz emLogística",
-      "company": "Veolia | Water Tech",
-      "emoji": "🏢",
-      "location": "São Paulo, SP",
-      "type": "CLT",
-      "area": "Logística",
-      "date_posted": "2026-06-25",
-      "url": "https://www.vagas.com.br/vagas/v2803691/jovem-aprendiz-em-logistica",
-      "source": "Vagas.com",
-      "is_new": true
-    },
-    {
-      "id": "vagas_-4837061130852384325",
+      "id": "vagas_-2377395582757746641",
       "title": "AuxiliarAdministrativo",
       "company": "Zubale",
       "emoji": "🏢",
@@ -1577,7 +1187,7 @@
       "is_new": true
     },
     {
-      "id": "vagas_2634130030571117715",
+      "id": "vagas_-4928900823278281265",
       "title": "Auxiliar de Serviços Administrativos",
       "company": "hcor",
       "emoji": "🏢",
