@@ -656,6 +656,7 @@ footer span { color: var(--cyan); }
       <div class="hdr-meta">
         <span class="status-dot">CACHE</span>
         <span class="last-upd" id="last-upd">Última atualização: —</span>
+        <span class="load-status" id="load-status">Pronto</span>
       </div>
       <button class="btn btn-ghost btn-sm" onclick="loadJobs(true)" title="Atualizar vagas">↻ Atualizar</button>
       <button class="btn btn-cyan btn-sm" onclick="openModal()">🔔 Alertas</button>
@@ -683,6 +684,14 @@ footer span { color: var(--cyan); }
         <option value="">Todos os contratos</option>
         <option>CLT</option><option>PJ</option><option>Estágio</option><option>Temporário</option>
       </select>
+      <select id="f-order" onchange="applyFilters()" style="min-width:120px">
+        <option value="">Ordenar por</option>
+        <option value="date">Data</option>
+        <option value="company">Empresa</option>
+        <option value="source">Fonte</option>
+      </select>
+      <button class="btn btn-ghost btn-sm" onclick="exportCsv()" title="Exportar vagas filtradas">Exportar CSV</button>
+      <button class="btn btn-ghost btn-sm" onclick="shareAll()" title="Compartilhar top 5 no WhatsApp">Compartilhar top 5</button>
       <button class="btn btn-ghost btn-sm" onclick="clearFilters()" title="Limpar filtros">Limpar</button>
   </div>
 
@@ -780,13 +789,14 @@ footer span { color: var(--cyan); }
 /* ──────────────── DATA ────────────────────────────── */
 
 /* ──────────────── STATE ───────────────────────────── */
-let allJobs=[], filtered=[], activeSrcs=new Set(), srcCounts={}, activeArea="";
+let allJobs=[], filtered=[], activeSrcs=new Set(), srcCounts={}, activeArea="", currentQuery="";
 
 /* ──────────────── AREA FILTER ─────────────────────── */
 function setArea(chip){
   document.querySelectorAll(".area-chip").forEach(c=>c.classList.remove("active"));
   chip.classList.add("active");
   activeArea = chip.dataset.area || "";
+  saveFilters();
   applyFilters();
 }
 
@@ -806,20 +816,62 @@ function populateAreaChips(jobs){
   container.innerHTML = '<span class="area-label">Área:</span>' + buttons.join(' ');
 }
 
+function saveFilters(){
+  localStorage.setItem('rv_search', document.getElementById('search').value || '');
+  localStorage.setItem('rv_company', document.getElementById('f-company').value || '');
+  localStorage.setItem('rv_type', document.getElementById('f-type').value || '');
+  localStorage.setItem('rv_order', document.getElementById('f-order').value || '');
+  localStorage.setItem('rv_area', activeArea || '');
+  localStorage.setItem('rv_sources', JSON.stringify([...activeSrcs]));
+}
+
+function restoreFilters(){
+  const q = localStorage.getItem('rv_search') || '';
+  const co = localStorage.getItem('rv_company') || '';
+  const tp = localStorage.getItem('rv_type') || '';
+  const od = localStorage.getItem('rv_order') || '';
+  const ar = localStorage.getItem('rv_area') || '';
+  const srcs = JSON.parse(localStorage.getItem('rv_sources') || 'null');
+  document.getElementById('search').value = q;
+  document.getElementById('f-company').value = co;
+  document.getElementById('f-type').value = tp;
+  document.getElementById('f-order').value = od;
+  activeArea = ar;
+  activeSrcs = srcs && Array.isArray(srcs) ? new Set(srcs) : new Set(Object.keys(srcCounts));
+}
+
+function updateStatus(text){
+  const el=document.getElementById('load-status');
+  if(el) el.textContent = text;
+}
+
 /* ──────────────── LOAD JOBS ───────────────────────── */
 async function loadJobs(force=false){
+  updateStatus('Carregando vagas...');
   showLoading();
   let jobs=[];
 
   try{
     const r=await fetch("jobs.json?t="+Date.now());
-    if(r.ok){const d=await r.json();jobs=d.jobs||[];if(jobs.length)setUpd(d.updated_at);}
+    if(!r.ok){
+      updateStatus(`Erro ao carregar: ${r.status}`);
+      throw new Error(`HTTP ${r.status}`);
+    }
+    const d=await r.json();
+    jobs=d.jobs||[];
+    if(jobs.length) setUpd(d.updated_at);
+    updateStatus(jobs.length ? 'Vagas carregadas' : 'Nenhuma vaga encontrada');
   }catch(e){
     console.warn("Falha ao carregar jobs.json:", e);
+    updateStatus('Falha ao carregar vagas');
+    const el=document.getElementById('job-list');
+    if(el) el.innerHTML=`<div class="board-empty"><div class="icon">⚠️</div><p>Não foi possível carregar as vagas. Verifique a conexão ou gere o arquivo <code>jobs.json</code>.</p></div>`;
+    return;
   }
 
   allJobs=jobs;
   buildSrcCounts(jobs);
+  restoreFilters();
   populateSrcSidebar();
   populateCompSel(jobs);
   populateAreaChips(jobs);
@@ -836,12 +888,15 @@ function buildSrcCounts(jobs){
 
 function populateSrcSidebar(){
   const el=document.getElementById("sb-sources");
-  el.innerHTML=Object.entries(srcCounts).sort((a,b)=>b[1]-a[1]).map(([src,cnt])=>`
+  el.innerHTML=Object.entries(srcCounts).sort((a,b)=>b[1]-a[1]).map(([src,cnt])=>{
+    const checked = activeSrcs.has(src) ? 'checked' : '';
+    return `
     <label class="sb-src-item">
-      <input type="checkbox" checked onchange="toggleSrc('${src}',this)"/>
+      <input type="checkbox" ${checked} onchange="toggleSrc('${src}',this)"/>
       <span class="sb-src-name">${esc(src)}</span>
       <span class="sb-src-count">${cnt}</span>
-    </label>`).join("");
+    </label>`;
+  }).join("");
 }
 
 function toggleSrc(src, cb){
@@ -863,8 +918,10 @@ function populateCompSel(jobs){
 /* ──────────────── FILTERS ─────────────────────────── */
 function applyFilters(){
   const q=document.getElementById("search").value.trim().toLowerCase();
+  currentQuery = document.getElementById("search").value.trim();
   const co=document.getElementById("f-company").value.trim().toLowerCase();
   const tp=document.getElementById("f-type").value.trim().toLowerCase();
+  const od=document.getElementById("f-order").value;
   // prepare a lowercased set of active sources for case-insensitive compare
   const activeSrcsLower = new Set([...activeSrcs].map(s=>String(s||"").toLowerCase()));
   filtered=allJobs.filter(j=>{
@@ -882,6 +939,14 @@ function applyFilters(){
     const ma=!activeArea||area.includes(activeArea.toLowerCase());
     return mq&&mc&&mt&&ms&&ma;
   });
+  if(od){
+    filtered.sort((a,b)=>{
+      if(od==='company') return a.company.localeCompare(b.company,'pt-BR');
+      if(od==='source') return a.source.localeCompare(b.source,'pt-BR');
+      return new Date(b.date_posted) - new Date(a.date_posted);
+    });
+  }
+  saveFilters();
   renderJobs(filtered);
 }
 
@@ -889,10 +954,14 @@ function clearFilters(){
   document.getElementById("search").value="";
   document.getElementById("f-company").value="";
   document.getElementById("f-type").value="";
+  document.getElementById("f-order").value="";
   activeArea="";
+  activeSrcs = new Set(Object.keys(srcCounts));
   document.querySelectorAll(".area-chip").forEach(c=>c.classList.remove("active"));
   const all=document.querySelectorAll(".area-chip");
   if(all.length) all[0].classList.add("active");
+  populateSrcSidebar();
+  saveFilters();
   applyFilters();
 }
 
@@ -916,15 +985,15 @@ function renderJobs(jobs){
       <div class="jc-co">
         <div class="jc-emo">${j.emoji||"🏢"}</div>
         <div class="jc-co-txt">
-          <div class="jc-co-name">${esc(j.company)}</div>
-          <div class="jc-co-src">${esc(j.source)}</div>
+          <div class="jc-co-name">${highlightText(j.company)}</div>
+          <div class="jc-co-src">${highlightText(j.source)}</div>
         </div>
       </div>
       <div class="jc-body">
-        <div class="jc-title">${esc(j.title)}${j.is_new?'<span class="badge b-new">NOVA</span>':""}</div>
+        <div class="jc-title">${highlightText(j.title)}${j.is_new?'<span class="badge b-new">NOVA</span>':""}</div>
         <div class="jc-meta">
-          <span class="jc-loc">📍 ${esc(j.location)}</span>
-          <span class="jc-area">${esc(j.area)}</span>
+          <span class="jc-loc">📍 ${highlightText(j.location)}</span>
+          <span class="jc-area">${highlightText(j.area)}</span>
         </div>
       </div>
       <div class="jc-right">
@@ -948,6 +1017,13 @@ function showLoading(){
 }
 
 function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function highlightText(text){
+  const q = currentQuery.trim();
+  if(!q) return esc(text);
+  const escaped = esc(text);
+  const safe = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return escaped.replace(new RegExp(`(${safe})`, 'gi'), '<mark>$1</mark>');
+}
 function fmtDate(s){if(!s)return"—";try{return new Date(s+"T00:00:00").toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit"})}catch{return s}}
 function setUpd(iso){
   if(!iso) return;
@@ -987,6 +1063,34 @@ function toast(msg){
   const el=document.getElementById("toast");
   el.textContent=msg;el.classList.add("show");
   setTimeout(()=>el.classList.remove("show"),2600);
+}
+
+function exportCsv(){
+  if(!filtered.length){
+    toast('Nenhuma vaga para exportar.');
+    return;
+  }
+  const headers=['Título','Empresa','Local','Área','Tipo','Fonte','Data','URL'];
+  const rows=filtered.map(j=>[
+    j.title,
+    j.company,
+    j.location,
+    j.area,
+    j.type,
+    j.source,
+    fmtDate(j.date_posted),
+    j.url,
+  ]);
+  const csv=[headers,...rows].map(r=>r.map(v=>`"${String(v||'').replace(/"/g,'""') }"`).join(';')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url; a.download='vagas.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast('CSV exportado.');
 }
 
 /* ──────────────── INIT ─────────────────────────────── */
