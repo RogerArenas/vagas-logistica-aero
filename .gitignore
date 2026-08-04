@@ -7,3 +7,9 @@ venv/
 *.egg-info/
 dist/
 .DS_Store
+
+# temporary inspection files
+temp*.py
+tmp*.py
+tmp*.html
+*.out

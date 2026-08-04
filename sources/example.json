@@ -1,0 +1,13 @@
+[
+  {
+    "id": "external_example_1",
+    "title": "Analista de Logística - Exemplo",
+    "company": "Fonte Externa Ltda",
+    "location": "Campinas, SP",
+    "type": "CLT",
+    "area": "Logística",
+    "date_posted": "2026-08-04",
+    "url": "https://example.com/vaga/1",
+    "source": "Fonte Externa"
+  }
+]

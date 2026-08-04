@@ -844,25 +844,35 @@ function toggleSrc(src, cb){
 
 /* ──────────────── COMPANY SELECT ───────────────────── */
 function populateCompSel(jobs){
-  const cos=[...new Set(jobs.map(j=>j.company))].sort();
+  // normalize company names (trim) and sort locale-aware
+  const cos=[...new Set(jobs.map(j=>String(j.company||"").trim()))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
   const sel=document.getElementById("f-company");
   const cur=sel.value;
   sel.innerHTML='<option value="">Todas as empresas</option>';
-  cos.forEach(c=>{const o=document.createElement("option");o.value=o.textContent=c;sel.appendChild(o);});
+  cos.forEach(c=>{const o=document.createElement("option"); o.value = c; o.textContent = c; sel.appendChild(o);});
   sel.value=cur;
 }
 
 /* ──────────────── FILTERS ─────────────────────────── */
 function applyFilters(){
-  const q=document.getElementById("search").value.toLowerCase();
-  const co=document.getElementById("f-company").value;
-  const tp=document.getElementById("f-type").value;
+  const q=document.getElementById("search").value.trim().toLowerCase();
+  const co=document.getElementById("f-company").value.trim().toLowerCase();
+  const tp=document.getElementById("f-type").value.trim().toLowerCase();
+  // prepare a lowercased set of active sources for case-insensitive compare
+  const activeSrcsLower = new Set([...activeSrcs].map(s=>String(s||"").toLowerCase()));
   filtered=allJobs.filter(j=>{
-    const mq=!q||[j.title,j.company,j.location,j.area,j.source].some(v=>String(v||"").toLowerCase().includes(q));
-    const mc=!co||j.company===co;
-    const mt=!tp||j.type===tp;
-    const ms=activeSrcs.has(j.source);
-    const ma=!activeArea||j.area===activeArea;
+    const title=String(j.title||"").toLowerCase();
+    const company=String(j.company||"").toLowerCase().trim();
+    const location=String(j.location||"").toLowerCase();
+    const area=String(j.area||"").toLowerCase();
+    const type=String(j.type||"").toLowerCase();
+    const source=String(j.source||"").toLowerCase();
+
+    const mq=!q||[title,company,location,area,source].some(v=>v.includes(q));
+    const mc=!co||company===co;
+    const mt=!tp||type===tp;
+    const ms=activeSrcsLower.has(source);
+    const ma=!activeArea||area.includes(activeArea.toLowerCase());
     return mq&&mc&&mt&&ms&&ma;
   });
   renderJobs(filtered);
