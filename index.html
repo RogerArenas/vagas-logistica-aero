@@ -686,20 +686,10 @@ footer span { color: var(--cyan); }
       <button class="btn btn-ghost btn-sm" onclick="clearFilters()" title="Limpar filtros">Limpar</button>
   </div>
 
-  <!-- Area chips -->
-  <div class="jobs-area-row">
+  <!-- Area chips (populated dynamically) -->
+  <div id="area-chips" class="jobs-area-row">
     <span class="area-label">Área:</span>
-    <button class="area-chip active" data-area="" onclick="setArea(this)">Todas</button>
-    <button class="area-chip" data-area="Logística" onclick="setArea(this)">Logística</button>
-    <button class="area-chip" data-area="Carga" onclick="setArea(this)">Carga Aérea</button>
-    <button class="area-chip" data-area="Operações" onclick="setArea(this)">Operações</button>
-    <button class="area-chip" data-area="Importação" onclick="setArea(this)">Importação / Exportação</button>
-    <button class="area-chip" data-area="Supply" onclick="setArea(this)">Supply Chain</button>
-    <button class="area-chip" data-area="Administração" onclick="setArea(this)">Administração</button>
-    <button class="area-chip" data-area="TI" onclick="setArea(this)">TI</button>
-    <button class="area-chip" data-area="Financeiro" onclick="setArea(this)">Financeiro</button>
-    <button class="area-chip" data-area="RH" onclick="setArea(this)">RH</button>
-    <button class="area-chip" data-area="Estágio" onclick="setArea(this)">Estágio</button>
+    <!-- buttons inserted by JS -->
   </div>
 
   <!-- Sidebar -->
@@ -796,8 +786,24 @@ let allJobs=[], filtered=[], activeSrcs=new Set(), srcCounts={}, activeArea="";
 function setArea(chip){
   document.querySelectorAll(".area-chip").forEach(c=>c.classList.remove("active"));
   chip.classList.add("active");
-  activeArea = chip.dataset.area;
+  activeArea = chip.dataset.area || "";
   applyFilters();
+}
+
+function populateAreaChips(jobs){
+  const container=document.getElementById('area-chips');
+  if(!container) return;
+  // collect unique areas from jobs (trimmed)
+  const areas = [...new Set(jobs.map(j=>String(j.area||'').trim()).filter(a=>a))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  // always include 'Todas' first
+  const buttons = [];
+  buttons.push(`<button class="area-chip ${!activeArea? 'active':''}" data-area="" onclick="setArea(this)">Todas</button>`);
+  for(const a of areas){
+    const safe = esc(a);
+    const activeCls = (activeArea && activeArea.toLowerCase()===a.toLowerCase())? ' active':'';
+    buttons.push(`<button class="area-chip${activeCls}" data-area="${safe}" onclick="setArea(this)">${safe}</button>`);
+  }
+  container.innerHTML = '<span class="area-label">Área:</span>' + buttons.join(' ');
 }
 
 /* ──────────────── LOAD JOBS ───────────────────────── */
@@ -816,6 +822,7 @@ async function loadJobs(force=false){
   buildSrcCounts(jobs);
   populateSrcSidebar();
   populateCompSel(jobs);
+  populateAreaChips(jobs);
   applyFilters();
 }
 
