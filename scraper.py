@@ -36,15 +36,24 @@ HEADERS = {
 }
 
 DEFAULT_TERMS = [
-    "logistica-aerea",
+    # termos ampliados para cobrir logística em SP (cidade + interior) e funções relevantes
+    "logistica",
     "logistica-sao-paulo",
-    "ground-handling",
+    "logistica-sp",
+    "supply-chain",
+    "operacoes-logisticas",
+    "analista-logistica",
+    "auxiliar-logistica",
+    "coordernador-logistica",
+    "motorista-carga",
     "carga-aerea",
-    "handling-aeroporto",
+    "ground-handling",
 ]
 DEFAULT_PAGES = 3
 SOURCE_NAME = "Vagas.com"
-DEFAULT_LOCATION = "São Paulo, SP"
+DEFAULT_LOCATION = "Brasil"
+
+import re
 
 OUTPUT_FILE = Path(__file__).parent / "jobs.json"
 
@@ -113,10 +122,28 @@ def fetch_vagas_com(terms: list = None, pages: int = DEFAULT_PAGES, session=None
                     if not title_link:
                         continue
 
-                    title = title_link.get_text(strip=True)
+                    title = title_link.get_text(" ", strip=True)
                     href = title_link.get("href", "")
                     company_el = card.select_one("span.emprVaga")
-                    company = company_el.get_text(strip=True) if company_el else "Empresa"
+                    company = company_el.get_text(" ", strip=True) if company_el else "Empresa"
+
+                    # tenta extrair localidade do card; usa algumas classes comuns e, como fallback,
+                    # procura por padrões "Cidade, UF" no texto do card
+                    location = None
+                    loc_el = card.select_one(
+                        "span.local, span.localVaga, span.localidade, span.vaga-localidade, p.local, div.local, span.vaga-local"
+                    )
+                    if loc_el:
+                        location = loc_el.get_text(" ", strip=True)
+                    else:
+                        card_text = card.get_text(" ", strip=True)
+                        # captura formatos comuns: "Cidade, UF" ou "Cidade / UF" ou "Cidade - UF"
+                        m = re.search(r"([A-Za-zÀ-ÿ\-\.\s]+(?:,|/|-)\s*[A-Z]{2})", card_text)
+                        if m:
+                            location = m.group(1).strip()
+                    if not location:
+                        location = DEFAULT_LOCATION
+
                     full_url = href if href.startswith("http") else f"https://www.vagas.com.br{href}"
                     vaga_id = f"vagas_{stable_hash(full_url)}"
 
@@ -125,7 +152,7 @@ def fetch_vagas_com(terms: list = None, pages: int = DEFAULT_PAGES, session=None
                         "title":       title,
                         "company":     company,
                         "emoji":       airline_emoji(company),
-                        "location":    DEFAULT_LOCATION,
+                        "location":    location,
                         "type":        "CLT",
                         "area":        "Logística",
                         "date_posted": today(),
