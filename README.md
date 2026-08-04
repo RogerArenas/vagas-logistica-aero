@@ -7,11 +7,11 @@
 ## 📸 O que você vai ter
 
 - **Tela de consulta** estilo painel de embarque (departure board)
-- **Busca em tempo real** na API pública da Gupy + Catho + Vagas.com
+- **Busca principal** a partir de vagas extraídas do **Vagas.com**
 - **Filtros** por empresa, tipo de contrato e área
 - **Botão de WhatsApp** para compartilhar vagas com 1 clique
 - **Alerta automático** por e-mail e WhatsApp quando surgem vagas novas
-- **Atualização diária** automática via GitHub Actions (de segunda a sexta)
+- **Atualização automática** via GitHub Actions (de segunda a sexta)
 - **Zero custo** — tudo roda no plano gratuito do GitHub
 
 ---
@@ -113,7 +113,7 @@ Os alertas são enviados pelo GitHub Actions quando novas vagas aparecem.
 │                      ↓                              │
 │           python scraper.py --notify                │
 │                      ↓                              │
-│   Gupy API + Catho + Vagas.com → jobs.json          │
+│   Vagas.com → jobs.json                             │
 │                      ↓                              │
 │    Se tiver vagas novas → E-mail + WhatsApp         │
 │                      ↓                              │
@@ -187,15 +187,25 @@ python -m http.server 8080
 
 ---
 
+## 📝 Documentos de suporte
+
+Use apenas estes três documentos como referência oficial do projeto:
+
+- `Melhorias.MD` — melhorias aplicadas e próximos passos
+- `Implementação final.MD` — descrição da implementação atual
+- `Historico.MD` — histórico de alterações do projeto
+
+---
+
 ## ❓ Dúvidas frequentes
 
 **O site não abre as vagas em tempo real?**
 
-Sim! O `index.html` busca vagas diretamente na API pública da Gupy via JavaScript. O `jobs.json` serve como cache e é atualizado 2x por dia pelo Actions.
+O `index.html` exibe vagas a partir do `jobs.json`, que funciona como cache das vagas coletadas pelo scraper. O scraper atual obtém vagas do **Vagas.com** e salva em `jobs.json` sempre que é executado.
 
 **Posso adicionar outras fontes de vagas?**
 
-Sim. Edite as funções `fetch_catho()` e `fetch_vagas_com()` no `scraper.py` ou adicione novas funções seguindo o mesmo padrão.
+Sim. Edite a função `fetch_vagas_com()` no `scraper.py` ou adicione novas funções seguindo o mesmo padrão de coleta e normalização.
 
 **Como compartilhar a vaga com minha namorada?**
 
